@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# terms -- start up a bunch of terminal windows
+# logging terminals log to ~/l/(basestring)(suffix)
+
+# non-logging terminals: m1, m2, m3 are handy for viewing log files and man
+# pages ... there is no reason to log that kind of stuff
+
+# logging terminal r is an extra root terminal
+
+# logging terminals c* are for domain consoles
+
+
+progname=$(basename $0)
+
+usage() {
+    if [ $# -ne 0 ]; then
+        echo "$progname: $*"
+    fi
+    echo "usage: $progname basestring [domainletter...]"
+    exit 2
+}
+
+reverse() {
+	if [ $# -eq 0 ]; then
+		return
+	fi
+	
+	typeset first="$1"
+	shift
+	reverse "$@"
+	echo "$first"
+}
+
+# nupOpts=
+
+# while getopts s: opt; do
+#     case $opt in
+#         s)
+#             nupOpts=$nupOpts" -s$OPTARG"
+#             ;;
+#     esac
+# done
+
+# shift $(( $OPTIND - 1 )
+
+
+if [ $# == 0 ]; then
+    usage
+fi
+base=$1
+shift
+
+# If the first arg is a letter, that indicates a typo -- abort
+LETTERS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_
+if [ ${LETTERS%$base*} != $LETTERS ]; then
+    echo "First arg is a letter, I don't think you meant that"
+    usage
+fi
+
+cd /var/opt/SUNWSMS/adm
+
+# KLUDGE: create one xterm in default location so that others will position
+# correctly
+xterm -n dummy -geometry 20x20 &
+DUMMYPID=$!
+sleep 1
+
+xterm -n ${base}m1 -fn -*-lucidatypewriter-medium-r-*-*-10-* -fb -*-lucidatypewriter-bold-r-*-*-10-* -geometry 202x25+0+20 &
+xterm -n ${base}m2 -fn -*-lucidatypewriter-medium-r-*-*-10-* -fb -*-lucidatypewriter-bold-r-*-*-10-* -geometry 202x25+20+40 &
+xterm -n ${base}m3 -fn -*-lucidatypewriter-medium-r-*-*-10-* -fb -*-lucidatypewriter-bold-r-*-*-10-* -geometry 202x25+40+60 &
+
+cd -
+
+lterm ${base}r -geometry 110x25-0+400 &
+
+pos=0
+for domain in $(reverse "$@"); do
+    lterm ${base}c$domain -geometry 80x15-$pos-$pos
+    shift
+    pos=$((pos + 20))
+done
+
+sleep 1
+
+# For some reason xterm ignores SIGTERM ???
+kill -9 $DUMMYPID
+
+# Local Variables:
+# indent-tabs-mode: nil
+# End:

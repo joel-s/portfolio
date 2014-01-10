@@ -1,0 +1,4 @@
+#!/bin/bash
+for p in $(echo $PATH | tr : " "); do
+  ls -1 $p/$1 2>/dev/null
+done

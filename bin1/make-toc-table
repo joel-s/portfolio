@@ -1,0 +1,15 @@
+#!/bin/bash
+ERPNAME=$1
+BASENAME=${ERPNAME%.erp}
+TABLENAME=$BASENAME.table
+
+#set -xe
+
+if [ -e $TABLENAME ]; then
+    echo "$TABLENAME already exists"
+    exit 2
+fi
+
+echo "PREGAP TRACK" > $TABLENAME
+grep "^aS'.*mp3'" $ERPNAME | cut -d"'" -f 2 \
+  | sed -e "s/^/0      /g"  >> $TABLENAME

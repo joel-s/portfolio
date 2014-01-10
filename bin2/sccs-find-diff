@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# Change symlinks to point to another installed version of SMS
+
+
+prog=$(basename $0)
+
+usage() {
+    if [ $# -ne 0 ]; then
+        echo "$prog: $*"
+    fi
+
+    echo "usage:"
+    echo "  $prog <sccs-file> <grep-like-command>..."
+    echo "    Finds the newest revision whose diffs match the grep-like cmd."
+    exit 2
+}
+
+err() {
+    echo "$prog: $*"
+}
+
+die() {
+    if [ $# -ne 0 ]; then
+        echo "$prog: $*"
+    fi
+    exit 1
+}
+
+# - read & check options - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+if [[ $# -lt 3 ]]; then
+    usage "too many arguments"
+fi
+
+FILE="$1"
+shift
+declare -a GREP_CMD
+GREP_CMD=("$@")
+
+# Get list of revision numbers, in newest-first order
+REVS="$(sccs prt -s "$FILE" | grep '^D' | awk -e '{print $2}')"
+
+# - find the revision - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+# Go through revisions in newest-first order, searching for the first one
+# that DOES NOT match the grep command.
+
+NEWER_REV=""
+FOUND_MATCH=""
+for REV in $REVS; do
+    if [[ -z "$NEWER_REV" ]]; then
+        NEWER_REV=$REV
+        continue
+    fi
+    echo $REV, $NEWER_REV
+    sccs sccsdiff -r $REV -r $NEWER_REV $FILE | "${GREP_CMD[@]}"
+    if [[ $? -eq 0 ]]; then
+        echo % sccs prs -r$NEWER_REV $FILE
+        sccs prs -r$NEWER_REV $FILE
+        echo % sccs sccsdiff -r $REV -r $NEWER_REV $FILE
+        sccs sccsdiff -r $REV -r $NEWER_REV $FILE
+        echo
+        echo
+    fi
+    NEWER_REV=$REV
+done
+
+echo "No match found"
+echo % sccs prs -r$NEWER_REV $FILE
+sccs prs -r$NEWER_REV $FILE
+echo % sccs get -ps -r $NEWER_REV $FILE
+sccs get -ps -r $NEWER_REV $FILE

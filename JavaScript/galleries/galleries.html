@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Galleries</title>
+</head>
+
+<style>
+
+	.newsLink { 
+		color:#048;
+	}
+	
+	#galleryImg {
+		display: block;
+		margin: 10px auto;
+	}
+	
+	table {
+		margin: 10px auto;
+	}
+	
+	.galleryButton {
+		width: 80px;
+		margin: 20px 10px;
+	}
+
+</style>
+
+
+<script src="javascript/jquery-1.9.1.js"></script>
+
+<script>
+	imgCat = "sports";
+	imgNum = -1;
+	numImgs = 5;
+	
+	function rotate() {
+
+		imgNum++;
+		if (imgNum >= numImgs) {
+			imgNum = 0;
+		}
+
+		$("#galleryImg").attr("src", "images/" + imgCat + imgNum + ".jpg");
+
+		setTimeout("rotate()", 3 * 1000);  // 3 seconds 
+	}
+
+	// This runs when the page has loaded
+	$(function() {
+
+		rotate();
+
+		$(".galleryButton").click(function(e) {
+
+			imgCat = $(this).attr("value").toLowerCase();
+
+			$("#galleryImg").attr("src", "images/" + imgCat + imgNum + ".jpg");
+
+		});
+		
+	});
+	
+</script>
+
+
+<body>
+<form>
+	
+<table>
+	<tr>
+		<td><input type="button" class="galleryButton" value="Sports" /></td>
+		<td><input type="button" class="galleryButton" value="Autos" /></td>
+		<td><input type="button" class="galleryButton" value="Food" /></td>
+	</tr>
+</table>
+
+<img id="galleryImg" src="images/sports0.jpg" width="640" height="480" />
+
+</form>
+</body>
+</html>

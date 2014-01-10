@@ -1,0 +1,14 @@
+#!/bin/bash
+# e.g. countuserlines joelsu *.py
+
+total=0
+
+files=$(find . -name SCCS -prune -o -name "$2" -print)
+for file in $files; do
+    if sccs prs $file 2>/dev/null | grep "D 1.1 .* $1" >/dev/null; then
+        lines=$(sed -e "/^[ \t]*$/d" $file | wc -l)
+        printf "%7d %s\n" $lines $file
+        total=$(($total + $lines))
+    fi
+done
+echo $total

@@ -1,0 +1,72 @@
+1.
+INSERT INTO orders (order#, customer#, orderdate)
+  VALUES (1021, 1009, '20-JUL-09');
+
+1 row(s) inserted.
+
+
+2.
+UPDATE orders
+  SET shipzip = 33222
+  WHERE order# = 1017;
+
+1 row(s) updated.
+
+
+3.
+COMMIT;
+
+Statement processed.
+
+
+4.
+INSERT INTO orders (order#, customer#, orderdate)
+  VALUES (1022, 2000, '06-AUG-09');
+  
+ORA-02291: integrity constraint (US_3437_SQL01_S22.ORDERS_CUSTOMER#_FK) violated - parent key not found
+
+In other words, there is no customer with customer#=2000.
+
+
+5.
+INSERT INTO orders (order#, customer#)
+  VALUES (1023, 1009);
+
+ORA-01400: cannot insert NULL into ("US_3437_SQL01_S22"."ORDERS"."ORDERDATE") 
+
+In other words, a valid order date is required.
+
+
+6.
+See question 7
+
+7.
+UPDATE books
+  SET cost = :Cost
+  WHERE isbn = :ISBN;
+  
+1 row(s) updated.
+
+
+8.
+ROLLBACK;
+
+Statement processed.
+
+
+9.
+DELETE FROM orderitems
+  WHERE order#=1005;
+  
+1 row(s) deleted.
+
+DELETE FROM orders
+  WHERE order#=1005;
+
+1 row(s) deleted.
+
+
+10.
+ROLLBACK;
+
+Statement processed.

@@ -1,0 +1,32 @@
+#!/bin/bash
+DELAY=$1
+BASENAME=$2
+
+set -xe
+
+if [ -e $BASENAME-ORIG.mp3 ]; then
+    echo 'help!'
+    exit 2
+fi
+
+mv $BASENAME.mp3 $BASENAME-ORIG.mp3
+mpg123 -s $BASENAME-ORIG.mp3
+
+cat-wavs -o $BASENAME-EDIT.wav $BASENAME.wav 
+
+
+| \
+    sox -t raw -r 44100 -s -w -c 2 - $BASENAME-ORIG.wav
+
+
+
+
+snd -e "(begin (open-sound "$BASENAME-ORIG.wav") (exit)"
+
+CURVOL=`aumix -vq | tail -c +5 | cut -d, -f1`
+if [ $CURVOL == 0 ]; then
+    aumix -v 0`cat $HOME/.mute` -c 0`cat $HOME/.mute`
+else
+    echo $CURVOL >$HOME/.mute
+    aumix -v 0 -c 0
+fi

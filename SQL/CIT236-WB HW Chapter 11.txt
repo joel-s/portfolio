@@ -1,0 +1,107 @@
+1.
+SELECT COUNT(*)
+  FROM books
+  WHERE category = 'COOKING';
+  
+2
+
+
+2.
+SELECT COUNT(*)
+  FROM books
+  WHERE retail > 30;
+  
+8
+
+
+3.
+SELECT MIN(pubdate)
+  FROM books;
+
+09-MAY-03
+
+
+4.
+SELECT SUM((paideach-cost) * quantity)
+  FROM books JOIN orderitems USING (isbn)
+    JOIN orders USING (order#)
+  WHERE customer# = 1017;
+  
+55.28
+
+
+5.
+SELECT MIN(retail)
+  FROM books
+  WHERE category = 'COMPUTER';
+  
+25
+
+
+6.
+SELECT AVG(SUM((paideach-cost) * quantity))
+  FROM books JOIN orderitems USING (isbn)
+    JOIN orders USING (order#)
+  GROUP BY order#;
+
+28.2152631578947368421052631578947368421 
+
+
+7.
+SELECT customer#, COUNT(order#)
+  FROM orders JOIN customers USING (customer#)
+  GROUP BY customer#
+  ORDER BY customer#;
+
+CUSTOMER# COUNT(ORDER#) 
+1001 2 
+1003 2 
+1004 1 
+1005 1 
+1007 1 
+1008 1 
+1010 2 
+1011 1 
+1014 1 
+1015 1 
+1017 1 
+1018 2 
+1019 1 
+1020 2 
+
+
+8.
+SELECT name, category, AVG(retail)
+  FROM books JOIN publisher USING (pubid)
+  WHERE category IN ('CHILDREN', 'COMPUTER')
+  GROUP BY name, category
+  HAVING AVG(retail) > 50;
+
+NAME CATEGORY AVG(RETAIL) 
+PUBLISH OUR WAY CHILDREN 59.95 
+AMERICAN PUBLISHING COMPUTER 52.3 
+PUBLISH OUR WAY COMPUTER 54.5 
+
+
+9.
+SELECT DISTINCT customer#
+  FROM customers JOIN orders USING (customer#)
+    JOIN orderitems using (order#)
+  WHERE state IN ('GA', 'FL')
+  GROUP BY customer#
+  HAVING SUM(quantity*paideach) > 80
+  ORDER BY customer#;
+  
+CUSTOMER# 
+1001 
+1003 
+1010 
+
+
+10.
+SELECT MAX(retail)
+  FROM books JOIN bookauthor USING (isbn)
+    JOIN author USING (authorid)
+  WHERE fname = 'LISA' AND lname = 'WHITE';
+
+39.95

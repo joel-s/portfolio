@@ -1,0 +1,9 @@
+#!/bin/sh
+SOUNDOPTS="/usr/share/sounds/KDE_Beep_ShortBeep.wav speed 0.647"
+for x in 1 0 1 1 1 0 1; do
+    if [ $x = 1 ]; then
+	play $SOUNDOPTS; printf "\a"
+    else
+	play -v 0.01 $SOUNDOPTS
+    fi
+done

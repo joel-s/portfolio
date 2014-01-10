@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+while true; do
+    /opt/SUNWSMS/bin/showfailover | grep ACTIVE >/dev/null
+    if [[ $? -eq 0 ]]; then
+        echo "fo ACTIVE at $(date)"
+        exit 0
+    fi
+    sleep 2
+done

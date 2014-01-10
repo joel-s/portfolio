@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# SCCS ID: "%Z%%M%  %I% %E% SMI"
+#
+
+typeset -r PROG=${0##*/}
+
+# Temp files and other stuff
+typeset -r tmpTarFile="/tmp/get_webrev.$$.tar"
+
+main()
+{
+    typeset bugid=""
+
+    # -- Parse command line --
+
+    while getopts b: c; do
+        case ${c} in
+        b)
+            bugid="$OPTARG"
+            ;;
+        *)
+            print_usage
+            return 2
+            ;;
+        esac
+    done
+
+    shift `expr $OPTIND - 1`
+
+    if [ $# -gt 0 ]; then
+        print_usage
+        return 2
+    fi
+
+    if [[ -e $bugid ]]; then
+        die "can't create directory $bugid: file already exists"
+    fi
+    run_cmd mkdir $bugid
+    run_cmd cd $bugid
+
+    # Get the attachment from the bug
+    run_cmd /usr/dist/exe/bug_attach -f webrev.tar.Z -g $bugid
+
+    if [[ ! -e webrev.tar.Z ]]; then
+        die "bug $bugid does not have an attachment named webrev.tar.Z"
+    fi
+
+    # Extract the file
+    zcat webrev.tar.Z | tar xpf -
+
+    rm -f webrev.tar.Z
+    
+    print "$PROG successful: webrev extracted into directory $bugid"
+}
+
+print_usage()
+{
+    print "Usage: $PROG -b bugID"
+    print
+    print "Description:"
+    print "    Extract a webrev attachment from a BugTraq+ bug report."
+    print "    The attachment must be named webrev.tar.Z."
+    print "    The webrev is extracted into a new dir named after the bugID."
+    print
+}
+
+# Echo command out, run it, exit with an error if it failed
+run_cmd()
+{
+    if [[ -n "$PRINT_CMDS" ]]; then
+        print "$@"
+    fi
+
+    # Supress stdout but not stderr
+    "$@" >/dev/null
+
+    if [[ $? -ne 0 ]]; then
+        die "command failed: $@"
+    fi
+}
+
+# Exit with an error message
+die()
+{
+    print "$@" >&2
+    exit 2
+}
+
+main $*
+exit 0

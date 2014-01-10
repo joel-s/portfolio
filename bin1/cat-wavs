@@ -1,0 +1,59 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+    echo "usage: $0 [-s] [-o outfile] wav1 [wav2...]"
+    exit 2
+fi
+
+OUTNAME="out.wav"
+
+if [ x"$1" == x"-s" ]; then
+    STRIP_GAPS=1
+    shift 1
+fi
+
+if [ x"$1" == x"-o" ]; then
+    OUTNAME=$2
+    shift 2
+fi
+
+if [ -e $OUTNAME ]; then
+    echo "$OUTNAME already exists"
+    exit 2
+fi
+
+echo output file: $OUTNAME
+
+i=0
+while [ $# -ne 0 ]; do
+    WAVNAME=$1
+    RAWTMPNAME=/tmp/cat-wavTMPa.$$
+    RAWCATNAME=/tmp/cat-wavTMPb.$$
+
+    if [ ! -r $WAVNAME ]; then
+        echo "cannot read $WAVNAME"
+        exit 2
+    fi
+
+    sox -t wav $WAVNAME -r 44100 -t raw $RAWTMPNAME
+
+    if [ $i -eq 0 ]; then
+        mv $RAWTMPNAME $RAWCATNAME
+    else
+        if [ $STRIP_GAPS ]; then
+            chomp-silence $RAWTMPNAME
+        fi
+        cat $RAWTMPNAME >> $RAWCATNAME
+        rm $RAWTMPNAME
+    fi
+    
+    printf "end of file %2d: " $i
+    raw-audio-length $RAWCATNAME
+
+    i=$(($i + 1))
+    shift
+done
+
+sox -t raw -r 44100 -w -s -c 2 $RAWCATNAME -t wav $OUTNAME
+rm $RAWCATNAME
+

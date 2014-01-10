@@ -1,0 +1,20 @@
+#!/bin/bash
+
+progname=$(basename $0)
+exitcode=0
+
+usage() {
+    echo "$progname: $*"
+    echo "usage: $progname file"
+    exit 2
+}
+
+
+if [ $# -ne 1 ]
+then
+    usage "wrong number of arguments"
+fi
+
+srcdir=$(dirname $src)
+srcfile=$(basename $src)
+echo $srcdir/SCCS/s.$srcfile

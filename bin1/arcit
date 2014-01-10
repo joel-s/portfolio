@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Compress a file uzing gzip if it is not already compressed.
+
+# Don't compress files smaller than this; will probably not save space
+MINSIZE=512
+
+# Don't archive files that are already "compressed"
+XTNS="gz mp3 bz2 mpg mpeg jpg zip png gif tgz MPG JPG ZIP PNG GIF TGZ"
+
+
+file="$1"
+
+for x in $XTNS; do
+    # if the file ends in .$x, then exit
+    if [ -z "${file##*.$x}" ]; then
+        exit
+    fi
+done
+
+# Get file size
+getsize() 
+{
+    ls -l "$1" | awk '{ print $5 }'
+}
+
+osize=$(getsize "$file")
+if [ $osize -lt $MINSIZE ]; then
+    exit
+fi
+
+# -n = don't save name & timestamp
+echo "gzip -fn $file" | tee ~/tmp/arcit-log
+gzip -fn "$file"
+
+nsize=$(getsize "$file.gz")
+
+if [ $nsize -gt $osize ]; then
+    printf "%15d %15d %s\n" $osize $nsize "$file" >> ~/tmp/arcit-errlog
+    printf "%15d %15d %s\n" $osize $nsize "$file"
+    exit
+fi

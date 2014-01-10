@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# To do: fix find so that it skips over directories that it can't change. Or
+# add code to "force" changes by recursive copying, etc.
+
+if [ $# -eq 0 ]; then
+  set .
+fi
+
+find "$@" -user $USER -perm -u+r ! -perm -g+r -exec chmod g+r {} \;
+find "$@" -user $USER -perm -u+w ! -perm -g+w -exec chmod g+w {} \;
+find "$@" -user $USER -perm -u+x ! -perm -g+x -exec chmod g+x {} \;

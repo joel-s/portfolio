@@ -1,0 +1,163 @@
+1.
+SELECT lastname, firstname, state
+    FROM customers
+    WHERE state = 'NJ';
+
+LASTNAME FIRSTNAME STATE 
+SMITH JENNIFER NJ 
+FALAH KENNETH NJ 
+
+
+2.
+SELECT order#, shipdate
+    FROM orders
+    WHERE shipdate > '01-APR-09';
+
+ORDER# SHIPDATE 
+1000 02-APR-09 
+1004 05-APR-09 
+1005 02-APR-09 
+1006 02-APR-09 
+1008 03-APR-09 
+1010 04-APR-09 
+1011 05-APR-09 
+1013 04-APR-09 
+1014 05-APR-09 
+1017 05-APR-09 
+1007 04-APR-09 
+1009 05-APR-09 
+
+
+3.
+SELECT title, category
+    FROM books
+    WHERE category != 'FITNESS';
+
+TITLE CATEGORY 
+REVENGE OF MICKEY FAMILY LIFE 
+BUILDING A CAR WITH TOOTHPICKS CHILDREN 
+DATABASE IMPLEMENTATION COMPUTER 
+COOKING WITH MUSHROOMS COOKING 
+HOLY GRAIL OF ORACLE COMPUTER 
+HANDCRANKED COMPUTERS COMPUTER 
+E-BUSINESS THE EASY WAY COMPUTER 
+PAINLESS CHILD-REARING FAMILY LIFE 
+THE WOK WAY TO COOK COOKING 
+BIG BEAR AND LITTLE DOVE CHILDREN 
+HOW TO GET FASTER PIZZA SELF HELP 
+HOW TO MANAGE THE MANAGER BUSINESS 
+SHORTEST POEMS LITERATURE 
+
+
+
+4.
+SELECT customer#, lastname, state
+    FROM customers
+    WHERE state IN ('GA', 'NJ')
+    ORDER BY lastname;
+-OR-
+SELECT customer#, lastname, state
+    FROM customers
+    WHERE state = 'GA' OR state = 'NJ'
+    ORDER BY lastname;
+
+CUSTOMER# LASTNAME STATE 
+1020 FALAH NJ 
+1010 LUCAS GA 
+1018 MONTIASA GA 
+1019 SMITH NJ 
+
+
+5.
+SELECT order#, orderdate
+    FROM orders
+    WHERE orderdate <= '01-APR-09';
+-OR-
+SELECT order#, orderdate
+    FROM orders
+    WHERE NOT orderdate > '01-APR-09';
+
+ORDER# ORDERDATE 
+1000 31-MAR-09 
+1001 31-MAR-09 
+1002 31-MAR-09 
+1003 01-APR-09 
+1004 01-APR-09 
+1005 01-APR-09 
+1006 01-APR-09 
+
+
+6.
+SELECT lname, fname
+    FROM author
+    WHERE lname LIKE '%IN%'
+    ORDER BY lname, fname;
+
+LNAME FNAME 
+AUSTIN JAMES 
+MARTINEZ SHEILA 
+ROBINSON ROBERT 
+WILKINSON ANTHONY 
+
+
+7.
+SELECT lastname, referred
+    FROM customers
+    WHERE referred IS NOT NULL;
+
+LASTNAME REFERRED 
+GIANA 1003 
+PEREZ 1003 
+NGUYEN 1006 
+DAUM 1010 
+SMITH 1003 
+
+
+8.
+SELECT title, category
+    FROM books
+    WHERE category LIKE 'C%N%';
+-OR-
+SELECT title, category
+    FROM books
+    WHERE category = 'CHILDREN' OR category = 'COOKING';
+-OR-
+SELECT title, category
+    FROM books
+    WHERE category IN ('CHILDREN', 'COOKING');
+
+TITLE CATEGORY 
+BUILDING A CAR WITH TOOTHPICKS CHILDREN 
+COOKING WITH MUSHROOMS COOKING 
+THE WOK WAY TO COOK COOKING 
+BIG BEAR AND LITTLE DOVE CHILDREN 
+
+
+9.
+SELECT isbn, title
+    FROM books
+    WHERE title LIKE '_A_N%'
+    ORDER BY title DESC;
+
+ISBN TITLE 
+2491748320 PAINLESS CHILD-REARING 
+
+
+10.
+SELECT title, pubdate
+    FROM books
+    WHERE category = 'COMPUTER' 
+        AND pubdate BETWEEN '01-JAN-05' AND '31-DEC-05';
+-OR-
+SELECT title, pubdate
+    FROM books
+    WHERE category = 'COMPUTER' 
+        AND pubdate >= '01-JAN-05' AND pubdate <= '31-DEC-05';
+-OR-
+SELECT title, pubdate
+    FROM books
+    WHERE category = 'COMPUTER' 
+        AND pubdate LIKE '__-___-05';
+
+HOLY GRAIL OF ORACLE 31-DEC-05 
+HANDCRANKED COMPUTERS 21-JAN-05 

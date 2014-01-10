@@ -1,0 +1,47 @@
+#!/bin/bash
+
+usage() {
+    if [ $# -ne 0 ]; then
+        echo "`basename $0`: $*" >&2
+        echo "usage: `basename $0` [-l] infile [outfile]"  >&2
+        echo "  -l = lower quality"  >&2
+        exit 2
+    fi  
+}
+
+# Set defaults
+QUALITY=1
+MINBITRATE=128
+
+while getopts "l" Option; do
+    case $Option in
+        l)  QUALITY=2; MINBITRATE=32;;
+        ?)  usage;;
+        *)  usage "unimplemented option chosen (?)";;   # DEFAULT
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+WAVNAME=$1
+BASENAME=${WAVNAME%.wav}
+#BASENAME=${BASENAME##*/}
+MP3NAME=${2-$BASENAME.mp3}
+
+#set -xe
+
+if [ ! -r $WAVNAME ]; then
+    echo "cannot read $WAVNAME"
+    exit 2
+fi
+
+if [ -e $MP3NAME ]; then
+    echo "$MP3NAME already exists"
+    exit 2
+fi
+
+if [ "$qopt" ]; then
+    lame -h -V$QUALITY -b$MINBITRATE -mj $WAVNAME $MP3NAME 2>/dev/null
+else
+    lame -h -V$QUALITY -b$MINBITRATE -mj $WAVNAME $MP3NAME
+fi

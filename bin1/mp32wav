@@ -1,0 +1,50 @@
+#!/bin/bash
+
+usage() {
+    if [ $# -ne 0 ]; then
+        echo "`basename $0`: $*" >&2
+        echo "usage: `basename $0` [-q] infile [outfile]" >&2
+        exit 2
+    fi  
+}
+
+# Set defaults
+qopt=""
+
+while getopts "q" Option; do
+    case $Option in
+        q) qopt="-q";;
+        ?) usage;;
+        *) usage "unimplemented option chosen (?)";;   # DEFAULT
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+
+MP3NAME=$1
+BASENAME=${MP3NAME%.mp3}
+#BASENAME=${BASENAME##*/}
+WAVNAME=${2-$BASENAME.wav}
+
+#set -xe
+
+if [ ! -r $MP3NAME ]; then
+    echo "cannot read $MP3NAME"
+    exit 2
+fi
+
+if [ -e $WAVNAME ]; then
+    echo "$WAVNAME already exists"
+    exit 2
+fi
+
+mpg123 $qopt --stereo -s $MP3NAME \
+  | sox -t raw -r $(mp3info -p "%Q\n" $MP3NAME) -w -s -c 2 - -t wav $WAVNAME
+
+
+echo "mpg123 $qopt --stereo -s -r 44100 $MP3NAME \\"
+echo "| sox -t raw -r $(mp3info -p "%Q" $MP3NAME) -w -s -c 2 - -t wav $WAVNAME"
+
+mpg123 $qopt -s -r 44100 --stereo $MP3NAME \
+ | sox -t raw -r $(mp3info -p "%Q" $MP3NAME) -w -s -c 2 - -t wav $WAVNAME

@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ x"$2" = x"" ]; then
+	arg2=$(pgrep $1)
+else
+	arg2="$2"
+fi
+	
+set -ex
+HOME=/ /usr/dt/bin/ttsession -p -c /ws/on81-tools/SUNWspro/SC6.1/bin/workshop -D $(which $1) "$arg2" &

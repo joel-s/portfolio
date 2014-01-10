@@ -1,0 +1,12 @@
+#!/bin/bash
+while [ "$1" ]; do
+    if [ -d "$1" ]; then
+	cd "$1"
+	pwd
+    else
+	cd $(dirname "$1")
+	echo $PWD/$(basename "$1")
+	cd -
+    fi
+    shift
+done

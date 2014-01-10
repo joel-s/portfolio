@@ -1,0 +1,126 @@
+<!doctype html>
+ 
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Job Application</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="javascript/job-app.js"></script>
+  <link rel="stylesheet" href="css/job-app.css" />
+  <script>
+  $(function() {
+    $("#edFrom").datepicker();
+    $("#edTo").datepicker();
+    $("#emFrom").datepicker();
+    $("#emTo").datepicker(); 
+  });
+  </script>
+</head>
+<body>
+
+<form>
+
+
+	<h1>PyLabs, LLC: Application for Employment</h1>
+
+
+	<h2>Application Date</h2>
+	
+	<strong>
+		<script>
+		showDate();	
+		</script>
+	</strong>
+	
+
+	<h2>Position Sought</h2>
+	
+	<table> 
+
+		<tr> <th><label for="position">Position sought:</label></th> <td><input type="text" name="position" /></td> </tr>
+
+		<tr> <th><label for="location">Location:</label></th> <td><input type="text" name="location" /></td> </tr>
+		
+	</table>
+
+
+	<h2>Contact Information</h2>
+	
+	<table>
+
+		<tr> <th><label for="firstName">First name:</label></th> <td><input type="text" name="firstName" /></td> </tr>
+
+		<tr> <th><label for="lastName">Last name:</label></th> <td><input type="text" name="lastName" /></td> </tr>
+		
+		<tr> <th><label for="address">Address:</label></th> <td><input type="text" name="address" /></td> </tr>
+		
+		<tr> <th><label for="city">City:</label></th> <td><input type="text" name="city" /></td> </tr>
+		
+		<tr> <th><label for="state">State:</label></th> <td><input type="text" name="state" /></td> </tr>
+		
+		<tr> <th><label for="zip">Zip:</label></th> <td><input type="text" name="zip" /></td> </tr>
+		
+		<tr> <th><label for="phone">Phone:</label></th> <td><input type="text" name="phone" /></td> </tr>
+		
+		<tr> <th><label for="email">Email:</label></th> <td><input type="text" name="email" /></td> </tr>
+		
+	</table>
+	
+
+	<h2>Attachments</h2>
+	
+	<table> 
+
+		<tr> <th><label for="resume">Resume:</label></th> <td><input type="file" name="resume" /> <em>Supported formats: PDF, Word, RTF, Text, and HTML</em></td> </tr>
+
+		<tr> <th><label for="coverLetter">Cover letter:</label></th> <td><textarea cols="50" rows="5" name="coverLetter"></textarea></td> </tr>
+		
+	</table>
+
+
+	<h2>Most Recent Education</h2>
+	
+	<table> 
+
+		<tr> <th><label for="school">School name:</label></th> <td><input type="text" name="school" /></td> </tr>
+
+		<tr> <th><label for="edLocation">Location:</label></th> <td><input type="text" name="edLocation" /></td> </tr>
+		
+		<tr> <th><label for="graduate">Graduated:</label></th> <td><input type="checkbox" name="graduate" /></td> </tr>
+		
+		<tr> <th><label for="degree">Degree:</label></th> <td><input type="text" name="degree" /></td> </tr>
+		
+		<tr> <th><label for="edFrom">From:</label></th> <td><input type="text" name="edFrom" id="emFrom" /></td> </tr>
+		
+		<tr> <th><label for="edTo">To:</label></th> <td><input type="text" name="edTo" id="emTo" /></td> </tr>
+		
+	</table>
+	
+
+	<h2>Most Recent Employment</h2>
+	
+	<table> 
+
+		<tr> <th><label for="company">Company:</label></th> <td><input type="text" name="company" /></td> </tr>
+
+		<tr> <th><label for="emLocation">Location:</label></th> <td><input type="text" name="emLocation" /></td> </tr>
+		
+		<tr> <th><label for="position">Position:</label></th> <td><input type="text" name="position" /></td> </tr>
+		
+		<tr> <th><label for="resp">Responsibilities:</label></th> <td><textarea cols="50" rows="5" name="resp"></textarea></td> </tr>
+
+		<tr> <th><label for="emFrom">From:</label></th> <td><input type="text" name="emFrom" id="emFrom" /></td> </tr>
+		
+		<tr> <th><label for="emTo">To:</label></th> <td><input type="text" name="emTo" id="emTo" /></td> </tr>
+		
+	</table>
+	
+	<p><input type="submit" value="Submit" />
+	
+
+</form>
+
+</body>
+</html>

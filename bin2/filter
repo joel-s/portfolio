@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# filter -- run a bunch of files through a filter; output overwrites the
+# original files.
+
+
+progname=$(basename $0)
+
+usage() {
+  if [ $# -ne 0 ]; then
+    echo "$progname: $*"
+  fi
+  echo "usage: $progname filter-command \; file..."
+  echo "(example: $progname sed -e s/foo/bar/g \; *.txt)"
+
+  exit 2
+}
+
+
+# nupOpts=
+
+# while getopts s: opt; do
+#   case $opt in
+#     s)
+#       nupOpts=$nupOpts" -s$OPTARG"
+#       ;;
+#   esac
+# done
+
+# shift $(( $OPTIND - 1 )
+
+
+i=0
+while [ $# -gt 0 -a "x$1" != "x;" ]; do
+  fcmd[$i]="$1"
+  i=$(($i + 1))
+  shift
+done
+if [ $# -eq 0 ]; then
+  usage
+fi
+shift
+
+if [ $# -eq 0 ]; then
+  usage "no files specified"
+fi
+
+tmpfile="/tmp/$progname-$$"
+
+for file in "$@"; do
+  "${fcmd[@]}" <"$file" >"$tmpfile"
+  if [ $? != 0 -o ! -e "$tmpfile" ]; then
+    echo "$progname: filter command failed for file $file"
+    exit 2
+  fi
+  if diff "$file" "$tmpfile" >/dev/null 2>/dev/null; then
+    # no changes made: delete tmp file
+    rm -f "$tmpfile"
+  else
+    echo "changed $file"
+    mv "$tmpfile" "$file"
+    if [ $? != 0 ]; then
+      echo "$progname: mv command failed for file $file"
+      exit 2
+    fi
+  fi
+done

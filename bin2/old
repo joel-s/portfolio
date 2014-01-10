@@ -1,0 +1,8 @@
+#!/bin/bash
+cat \
+  | grep joelsu \
+  | cut -c22-110 \
+  | sed -e 's/^/        /g' \
+  | fmt -s -w 80 | expand \
+  | sed -e 's/        \([0-9]\{7\}\)/\1/g' \
+  | sed -e 's/^/    /g'

@@ -1,0 +1,379 @@
+1a.
+SELECT b.title, p.phone
+  FROM books b, publisher p
+  WHERE b.pubid = p.pubid;
+
+TITLE PHONE 
+BODYBUILD IN 10 MINUTES A DAY 800-555-9743 
+REVENGE OF MICKEY 000-714-8321 
+BUILDING A CAR WITH TOOTHPICKS 010-410-0010 
+DATABASE IMPLEMENTATION 800-555-1211 
+COOKING WITH MUSHROOMS 800-555-9743 
+HOLY GRAIL OF ORACLE 800-555-1211 
+HANDCRANKED COMPUTERS 800-555-1211 
+E-BUSINESS THE EASY WAY 010-410-0010 
+PAINLESS CHILD-REARING 800-555-8284 
+THE WOK WAY TO COOK 800-555-9743 
+BIG BEAR AND LITTLE DOVE 800-555-8284 
+HOW TO GET FASTER PIZZA 800-555-9743 
+HOW TO MANAGE THE MANAGER 000-714-8321 
+SHORTEST POEMS 800-555-8284 
+
+
+1b.
+SELECT b.title, p.phone
+  FROM books b JOIN publisher p USING (pubid);
+
+TITLE PHONE 
+BODYBUILD IN 10 MINUTES A DAY 800-555-9743 
+REVENGE OF MICKEY 000-714-8321 
+BUILDING A CAR WITH TOOTHPICKS 010-410-0010 
+DATABASE IMPLEMENTATION 800-555-1211 
+COOKING WITH MUSHROOMS 800-555-9743 
+HOLY GRAIL OF ORACLE 800-555-1211 
+HANDCRANKED COMPUTERS 800-555-1211 
+E-BUSINESS THE EASY WAY 010-410-0010 
+PAINLESS CHILD-REARING 800-555-8284 
+THE WOK WAY TO COOK 800-555-9743 
+BIG BEAR AND LITTLE DOVE 800-555-8284 
+HOW TO GET FASTER PIZZA 800-555-9743 
+HOW TO MANAGE THE MANAGER 000-714-8321 
+SHORTEST POEMS 800-555-8284 
+
+
+2a.
+SELECT o.order#, c.customer#
+  FROM orders o, customers c
+  WHERE o.customer# = c.customer#
+    AND o.shipdate IS NULL;
+
+ORDER# CUSTOMER# 
+1012 1017 
+1015 1020 
+1016 1003 
+1018 1001 
+1019 1018 
+1020 1008 
+
+
+2b.
+SELECT o.order#, customer#
+  FROM orders o JOIN customers c USING (customer#)
+  WHERE o.shipdate IS NULL
+  ORDER BY o.orderdate;
+	
+ORDER# CUSTOMER# 
+1012 1017 
+1015 1020 
+1016 1003 
+1018 1001 
+1019 1018 
+1020 1008 
+
+
+3a.
+SELECT DISTINCT c.customer#, c.firstname, c.lastname
+  FROM customers c, orders o, orderitems oi, books b
+  WHERE c.customer# = o.customer#
+    AND o.order# = oi.order#
+    AND oi.isbn = b.isbn
+    AND c.state = 'FL'
+    AND b.category = 'COMPUTER';
+
+CUSTOMER# FIRSTNAME LASTNAME 
+1003 LEILA SMITH 
+1001 BONITA MORALES 
+
+
+3b.
+SELECT DISTINCT customer#, c.firstname, c. lastname
+  FROM customers c JOIN orders o USING (customer#)
+    JOIN orderitems oi USING (order#)
+    JOIN books b USING (isbn)
+  WHERE c.state = 'FL'
+    AND b.category = 'COMPUTER';
+
+CUSTOMER# FIRSTNAME LASTNAME 
+1003 LEILA SMITH 
+1001 BONITA MORALES 
+
+
+4a.
+SELECT DISTINCT b.title
+  FROM books b, orderitems oi, orders o, customers c
+  WHERE b.isbn = oi.isbn
+    AND oi.order# = o.order#
+    AND o.customer# = c.customer#
+    AND c.firstname = 'JAKE'
+    AND c.lastname = 'LUCAS';
+    
+TITLE 
+PAINLESS CHILD-REARING 
+HOW TO MANAGE THE MANAGER 
+
+
+4b.
+SELECT DISTINCT b.title
+  FROM books b JOIN orderitems oi USING (isbn)
+    JOIN orders o USING (order#)
+    JOIN customers c USING (customer#)
+  WHERE c.firstname = 'JAKE'
+    AND c.lastname = 'LUCAS';
+    
+TITLE 
+PAINLESS CHILD-REARING 
+HOW TO MANAGE THE MANAGER 
+
+
+5a.
+SELECT o.orderdate, b.title, (oi.paideach - b.cost) * oi.quantity "PROFIT"
+  FROM books b, orderitems oi, orders o, customers c
+  WHERE b.isbn = oi.isbn
+    AND oi.order# = o.order#
+    AND o.customer# = c.customer#
+    AND c.firstname = 'JAKE'
+    AND c.lastname = 'LUCAS'
+  ORDER BY o.orderdate, profit DESC;
+
+ORDERDATE TITLE PROFIT 
+31-MAR-09 PAINLESS CHILD-REARING 37.45 
+31-MAR-09 HOW TO MANAGE THE MANAGER 16.55 
+03-APR-09 PAINLESS CHILD-REARING 37.45 
+
+
+5b.
+SELECT o.orderdate, b.title, (oi.paideach - b.cost) * oi.quantity "PROFIT"
+  FROM books b JOIN orderitems oi USING (isbn)
+    JOIN orders o USING (order#)
+    JOIN customers c USING (customer#)
+  WHERE c.firstname = 'JAKE'
+    AND c.lastname = 'LUCAS'
+  ORDER BY o.orderdate, profit DESC;
+
+ORDERDATE TITLE PROFIT 
+31-MAR-09 PAINLESS CHILD-REARING 37.45 
+31-MAR-09 HOW TO MANAGE THE MANAGER 16.55 
+03-APR-09 PAINLESS CHILD-REARING 37.45 
+
+
+6a.
+SELECT b.title
+  FROM books b, bookauthor ba, author a
+  WHERE b.isbn = ba.isbn
+    AND ba.authorid = a.authorid
+    AND a.lname = 'ADAMS';
+    
+TITLE 
+DATABASE IMPLEMENTATION 
+
+
+6b.
+SELECT b.title
+  FROM books b JOIN bookauthor ba USING (isbn)
+    JOIN author a USING (authorid)
+  WHERE a.lname = 'ADAMS';
+    
+TITLE 
+DATABASE IMPLEMENTATION 
+
+
+7a.
+SELECT p.gift
+  FROM promotion p, books b
+  WHERE b.retail BETWEEN p.minretail AND p.maxretail
+    AND b.title = 'SHORTEST POEMS';
+
+GIFT 
+BOOK COVER 
+
+
+7b.
+SELECT p.gift
+  FROM promotion p JOIN books b ON b.retail BETWEEN p.minretail AND p.maxretail
+  WHERE b.title = 'SHORTEST POEMS';
+ 
+GIFT 
+BOOK COVER 
+
+
+8a.
+SELECT a.fname || ' ' || a.lname "AUTHOR NAME"
+  FROM author a, bookauthor ba, books b, orderitems oi, orders o, customers c
+  WHERE a.authorid = ba.authorid
+    AND ba.isbn = b.isbn
+    AND b.isbn = oi.isbn
+    AND oi.order# = o.order#
+    AND o.customer# = c.customer#
+    AND c.firstname = 'BECCA'
+    AND c.lastname = 'NELSON';
+  
+AUTHOR NAME 
+JANICE JONES 
+JACK BAKER 
+ROBERT ROBINSON 
+OSCAR FIELDS 
+WILLIAM WHITE 
+LISA WHITE 
+ROBERT ROBINSON 
+
+
+8b.
+SELECT a.fname || ' ' || a.lname "AUTHOR NAME"
+  FROM author a JOIN bookauthor ba USING (authorid)
+    JOIN books b USING (isbn) 
+    JOIN orderitems oi USING (isbn)
+    JOIN orders o USING (order#)
+    JOIN customers c USING (customer#)
+  WHERE c.firstname = 'BECCA'
+    AND c.lastname = 'NELSON';
+
+AUTHOR NAME 
+JANICE JONES 
+JACK BAKER 
+ROBERT ROBINSON 
+OSCAR FIELDS 
+WILLIAM WHITE 
+LISA WHITE 
+ROBERT ROBINSON 
+
+
+9a.
+SELECT b.title, o.order#, c.state
+  FROM books b, orderitems oi, orders o, customers c
+  WHERE b.isbn = oi.isbn(+)
+    AND oi.order# = o.order#(+)
+    AND o.customer# = c.customer#(+)
+  ORDER BY b.title;
+  
+TITLE ORDER# STATE 
+BIG BEAR AND LITTLE DOVE 1017 FL 
+BIG BEAR AND LITTLE DOVE 1012 MI 
+BODYBUILD IN 10 MINUTES A DAY 1003 FL 
+BUILDING A CAR WITH TOOTHPICKS -  -  
+COOKING WITH MUSHROOMS 1000 WA 
+COOKING WITH MUSHROOMS 1008 ID 
+COOKING WITH MUSHROOMS 1015 NJ 
+COOKING WITH MUSHROOMS 1018 FL 
+COOKING WITH MUSHROOMS 1020 WY 
+COOKING WITH MUSHROOMS 1003 FL 
+DATABASE IMPLEMENTATION 1003 FL 
+DATABASE IMPLEMENTATION 1018 FL 
+DATABASE IMPLEMENTATION 1010 NJ 
+DATABASE IMPLEMENTATION 1013 WY 
+DATABASE IMPLEMENTATION 1002 IL 
+E-BUSINESS THE EASY WAY 1006 FL 
+HANDCRANKED COMPUTERS 1012 MI 
+HOLY GRAIL OF ORACLE -  -  
+HOW TO GET FASTER PIZZA -  -  
+HOW TO MANAGE THE MANAGER 1001 GA 
+PAINLESS CHILD-REARING 1011 GA 
+PAINLESS CHILD-REARING 1016 FL 
+PAINLESS CHILD-REARING 1004 NJ 
+PAINLESS CHILD-REARING 1001 GA 
+PAINLESS CHILD-REARING 1012 MI 
+REVENGE OF MICKEY 1019 GA 
+REVENGE OF MICKEY 1012 MI 
+REVENGE OF MICKEY 1014 TX 
+SHORTEST POEMS 1005 GA 
+THE WOK WAY TO COOK -  -  
+
+
+9b.
+SELECT b.title, order#, c.state
+  FROM books b LEFT JOIN orderitems oi USING (isbn)
+    LEFT JOIN orders o USING (order#)
+    LEFT JOIN customers c USING (customer#)
+  ORDER BY b.title;
+
+TITLE ORDER# STATE 
+BIG BEAR AND LITTLE DOVE 1017 FL 
+BIG BEAR AND LITTLE DOVE 1012 MI 
+BODYBUILD IN 10 MINUTES A DAY 1003 FL 
+BUILDING A CAR WITH TOOTHPICKS -  -  
+COOKING WITH MUSHROOMS 1000 WA 
+COOKING WITH MUSHROOMS 1008 ID 
+COOKING WITH MUSHROOMS 1015 NJ 
+COOKING WITH MUSHROOMS 1018 FL 
+COOKING WITH MUSHROOMS 1020 WY 
+COOKING WITH MUSHROOMS 1003 FL 
+DATABASE IMPLEMENTATION 1003 FL 
+DATABASE IMPLEMENTATION 1018 FL 
+DATABASE IMPLEMENTATION 1010 NJ 
+DATABASE IMPLEMENTATION 1013 WY 
+DATABASE IMPLEMENTATION 1002 IL 
+E-BUSINESS THE EASY WAY 1006 FL 
+HANDCRANKED COMPUTERS 1012 MI 
+HOLY GRAIL OF ORACLE -  -  
+HOW TO GET FASTER PIZZA -  -  
+HOW TO MANAGE THE MANAGER 1001 GA 
+PAINLESS CHILD-REARING 1011 GA 
+PAINLESS CHILD-REARING 1016 FL 
+PAINLESS CHILD-REARING 1004 NJ 
+PAINLESS CHILD-REARING 1001 GA 
+PAINLESS CHILD-REARING 1012 MI 
+REVENGE OF MICKEY 1019 GA 
+REVENGE OF MICKEY 1012 MI 
+REVENGE OF MICKEY 1014 TX 
+SHORTEST POEMS 1005 GA 
+THE WOK WAY TO COOK -  -  
+
+
+10a. 
+SELECT e.first_name || ' ' || e.last_name "EMPLOYEE NAME", 
+    e.job_id "JOB TITLE", 
+    m.first_name || ' ' || m.last_name "MANAGER NAME"
+  FROM employees e, employees m
+  WHERE e.manager_id = m.employee_id(+)
+  ORDER BY m.last_name;
+  
+EMPLOYEE NAME JOB TITLE MANAGER NAME 
+Alexander Hunold IT_PROG Lex De Haan 
+Pat Fay MK_REP Michael Hartstein 
+William Gietz AC_ACCOUNT Shelley Higgins 
+Diana Lorentz IT_PROG Alexander Hunold 
+Bruce Ernst IT_PROG Alexander Hunold 
+Neena Kochhar AD_VP Steven King 
+Lex De Haan AD_VP Steven King 
+Eleni Zlotkey SA_MAN Steven King 
+Michael Hartstein MK_MAN Steven King 
+Kevin Mourgos ST_MAN Steven King 
+Jennifer Whalen AD_ASST Neena Kochhar 
+Shelley Higgins AC_MGR Neena Kochhar 
+Randall Matos ST_CLERK Kevin Mourgos 
+Peter Vargas ST_CLERK Kevin Mourgos 
+Curtis Davies ST_CLERK Kevin Mourgos 
+Trenna Rajs ST_CLERK Kevin Mourgos 
+Ellen Abel SA_REP Eleni Zlotkey 
+Jonathon Taylor SA_REP Eleni Zlotkey 
+Kimberely Grant SA_REP Eleni Zlotkey 
+Steven King AD_PRES 
+
+
+10b.
+SELECT e.first_name || ' ' || e.last_name "EMPLOYEE NAME", 
+    e.job_id "JOB TITLE", 
+    m.first_name || ' ' || m.last_name "MANAGER NAME"
+  FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id
+  ORDER BY m.last_name;
+
+EMPLOYEE NAME JOB TITLE MANAGER NAME 
+Alexander Hunold IT_PROG Lex De Haan 
+Pat Fay MK_REP Michael Hartstein 
+William Gietz AC_ACCOUNT Shelley Higgins 
+Diana Lorentz IT_PROG Alexander Hunold 
+Bruce Ernst IT_PROG Alexander Hunold 
+Neena Kochhar AD_VP Steven King 
+Lex De Haan AD_VP Steven King 
+Eleni Zlotkey SA_MAN Steven King 
+Michael Hartstein MK_MAN Steven King 
+Kevin Mourgos ST_MAN Steven King 
+Jennifer Whalen AD_ASST Neena Kochhar 
+Shelley Higgins AC_MGR Neena Kochhar 
+Randall Matos ST_CLERK Kevin Mourgos 
+Peter Vargas ST_CLERK Kevin Mourgos 
+Curtis Davies ST_CLERK Kevin Mourgos 
+Trenna Rajs ST_CLERK Kevin Mourgos 
+Ellen Abel SA_REP Eleni Zlotkey 
+Jonathon Taylor SA_REP Eleni Zlotkey 
+Kimberely Grant SA_REP Eleni Zlotkey 
+Steven King AD_PRES 

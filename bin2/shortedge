@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# shortedge: Turn every second page in a document upside down.
+
+# This is useful for preprocessing postcript files before printing them on a
+# duplex printer. It causes the printer to print wiht `short-edge binding'
+# instead of `long-edge binding', or vice versa.
+
+
+progname=$(basename $0)
+
+usage() {
+  if [ $# -ne 0 ]; then
+    echo "$progname: $*"
+  fi
+  echo "usage: $progname [-p paper] [infile [outfile]]"
+  exit 2
+}
+
+
+paper=letter
+
+while getopts p: opt; do
+  case $opt in
+    p)
+      paper="$OPTARG"
+      ;;
+  esac
+done
+
+shift $(( $OPTIND - 1 ))
+
+
+if [  $# -gt 2 ]; then
+  usage "too many arguments ($#)"
+fi
+
+
+if [ $# -ge 1 ]; then
+  infile="$1"
+else
+  infile=-
+fi
+
+cat "$infile" | \
+ pstops -b -p"$paper" 2:0\(0w,0h\),1U\(1w,1h\) |
+
+if [ $# -ge 2 ]; then
+  # Copy shell standard input to a file.
+  cat > "$2"
+else
+  # Copy shell standard input to standard output.
+  cat
+fi

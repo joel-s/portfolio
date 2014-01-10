@@ -1,0 +1,87 @@
+1.  Write a query to display the employee last name, department NAME, location ID, and city of all employees who earn a commission.
+
+SELECT e.last_name, d.department_name, location_id, l.city
+  FROM employees e JOIN departments d USING (department_id)
+    JOIN locations l USING (location_id)
+  WHERE e.commission_pct > 0;
+
+LAST_NAME DEPARTMENT_NAME LOCATION_ID CITY 
+Zlotkey Sales 2500 Oxford 
+Abel Sales 2500 Oxford 
+Taylor Sales 2500 Oxford 
+
+
+2. Display the employee last name and department NAME for all employees who have an a (lowercase a) in their last names.
+
+SELECT e.last_name, d.department_name
+  FROM employees e JOIN departments d USING (department_id)
+  WHERE e.last_name LIKE '%a%';
+   
+LAST_NAME DEPARTMENT_NAME 
+Kochhar Executive 
+De Haan Executive 
+Whalen Administration 
+Taylor Sales 
+Rajs Shipping 
+Davies Shipping 
+Matos Shipping 
+Vargas Shipping 
+Hartstein Marketing 
+Fay Marketing 
+
+
+3. Display the highest, lowest, sum and average salary of all employees.  Label the columns Maximum, Minimum, Sum and Average.  Round your results to the nearest whole number.
+
+SELECT ROUND(MAX(salary), 0) "Maximum", ROUND(MIN(salary), 0) "Minimum", ROUND(SUM(salary), 0) "Sum", ROUND(AVG(salary), 0) "Average"
+  FROM employees;
+
+Maximum Minimum Sum Average 
+24000 2500 175500 8775 
+
+
+4. Write a query to display the last name and hire date of any employee in the same department as Zlotkey.  Exclude Zlotkey from the response, if you can.
+
+SELECT last_name, hire_date
+  FROM employees
+  WHERE department_id = (SELECT department_id 
+                           FROM employees
+                           WHERE last_name = 'Zlotkey')
+    AND last_name != 'Zlotkey';
+
+LAST_NAME HIRE_DATE 
+Abel 11-MAY-96 
+Taylor 24-MAR-98 
+
+
+5. Create a query to display the employee numbers and last names of all employees who earn more than the average salary.  Sort the results in ascending order of salary.
+
+SELECT employee_id, last_name
+  FROM employees
+  WHERE salary > (SELECT AVG(salary)
+                    FROM employees)
+  ORDER BY salary;
+
+EMPLOYEE_ID LAST_NAME 
+103 Hunold 
+149 Zlotkey 
+174 Abel 
+205 Higgins 
+201 Hartstein 
+102 De Haan 
+101 Kochhar 
+100 King 
+
+
+6. Display the last name, department number and job id for all employees whose department location ID is 1700.
+
+SELECT e.last_name, department_id, e.job_id
+  FROM employees e JOIN departments d USING(department_id)
+  WHERE d.location_id = 1700;
+  
+LAST_NAME DEPARTMENT_ID JOB_ID 
+King 90 AD_PRES 
+Kochhar 90 AD_VP 
+De Haan 90 AD_VP 
+Whalen 10 AD_ASST 
+Higgins 110 AC_MGR 
+Gietz 110 AC_ACCOUNT 

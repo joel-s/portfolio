@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Print out the absolute path name of each argument.
+
+prog=$(basename $0)
+
+usage() {
+    print "usage: $prog src..."
+    exit 2
+}
+
+
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+for file in "$@"; do
+	if ls -Ld -- "$file" >/dev/null; then
+		cd "$(dirname "$file")"
+		print -- "$PWD/$(basename "$file")"
+		cd "$OLDPWD"
+	fi
+done

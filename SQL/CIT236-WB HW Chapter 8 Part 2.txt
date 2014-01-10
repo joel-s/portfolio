@@ -1,0 +1,101 @@
+1.
+DESCRIBE employees
+
+Table Column Data Type Length Precision Scale Primary Key Nullable Default Comment 
+EMPLOYEES EMPLOYEE_ID NUMBER -  6 0 1 -  -  Primary key of employees table. 
+  FIRST_NAME VARCHAR2 20 -  -  -   -  First name of the employee. A not null column. 
+  LAST_NAME VARCHAR2 25 -  -  -  -  -  Last name of the employee. A not null column. 
+  EMAIL VARCHAR2 25 -  -  -  -  -  Email id of the employee 
+  PHONE_NUMBER VARCHAR2 20 -  -  -   -  Phone number of the employee includes country code and area code 
+  HIRE_DATE DATE 7 -  -  -  -  -  Date when the employee started on this job. A not null column. 
+  JOB_ID VARCHAR2 10 -  -  -  -  -  Current job of the employee foreign key to job_id column of the jobs table. A not null column. 
+  SALARY NUMBER -  8 2 -   -  Monthly salary of the employee. Must be greater than zero (enforced by constraint emp_salary_min) 
+  COMMISSION_PCT NUMBER -  2 2 -   -  Commission percentage of the employee Only employees in sales department elgible for commission percentage 
+  MANAGER_ID NUMBER -  6 0 -   -  Manager id of the employee has same domain as manager_id in departments table. Foreign key to employee_id column of employees table. (useful for reflexive joins and CONNECT BY query) 
+  DEPARTMENT_ID NUMBER -  4 
+
+
+2.
+SELECT last_name, salary
+  FROM employees
+  WHERE salary > 12000;
+
+LAST_NAME SALARY 
+King 24000 
+Kochhar 17000 
+De Haan 17000 
+Hartstein 13000 
+
+
+3.
+SELECT employee_id, last_name, department_id, hire_date
+  FROM employees
+  WHERE employee_id = 176;
+
+EMPLOYEE_ID LAST_NAME DEPARTMENT_ID HIRE_DATE 
+176 Taylor 80 24-MAR-98 
+
+
+---------------------------------------------------------------
+
+1.
+SELECT employee_id, last_name, job_id, hire_date
+  FROM employees
+  WHERE hire_date BETWEEN '20-FEB-98' AND '01-JAN-99';
+
+EMPLOYEE_ID LAST_NAME JOB_ID HIRE_DATE 
+176 Taylor SA_REP 24-MAR-98 
+143 Matos ST_CLERK 15-MAR-98 
+144 Vargas ST_CLERK 09-JUL-98 
+
+
+2.
+SELECT last_name, department_id
+  FROM employees
+  WHERE department_id IN (20, 50)
+  ORDER BY last_name;
+
+LAST_NAME DEPARTMENT_ID 
+Davies 50 
+Fay 20 
+Hartstein 20 
+Matos 50 
+Mourgos 50 
+Rajs 50 
+Vargas 50 
+
+
+3.
+SELECT last_name
+  FROM employees
+  WHERE last_name LIKE '__a%';
+
+LAST_NAME 
+Grant 
+Whalen 
+
+
+4.
+DESCRIBE jobs
+
+Table Column Data Type Length Precision Scale Primary Key Nullable Default Comment 
+JOBS JOB_ID VARCHAR2 10 -  -  1 -  -  Primary key of jobs table. 
+  JOB_TITLE VARCHAR2 35 -  -  -  -  -  A not null column that shows job title, e.g. AD_VP, FI_ACCOUNTANT 
+  MIN_SALARY NUMBER -  6 0 -   -  Minimum salary for a job title. 
+  MAX_SALARY NUMBER -  6 0 -   -  Maximum salary for a job title 
+
+DESCRIBE job_grades
+...
+
+DESCRIBE job_history
+...
+
+DESCRIBE departments
+...
+
+DESCRIBE regions
+...
+
+DESCRIBE locations
+...
+

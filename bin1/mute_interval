@@ -1,0 +1,6 @@
+#!/bin/sh
+
+ORIGVOL=`aumix -vq | tail -c +5 | cut -d, -f1`
+aumix -v 0
+sleep ${1-10}
+aumix -v $ORIGVOL

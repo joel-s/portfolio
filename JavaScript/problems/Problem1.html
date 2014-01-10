@@ -1,0 +1,44 @@
+<!doctype html>
+ 
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Conversion</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="javascript/conversion.js"></script>
+  <link rel="stylesheet" href="css/tabs-conversion.css" />
+  <script>
+  $(function() {
+    $("#tabs").tabs();
+   	$("tr:even").css("background-color", "#fff");
+    $("tr:odd").css("background-color", "#ddf");
+  });
+  </script>
+</head>
+<body>
+ 
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Miles to Kilometers</a></li>
+    <li><a href="#tabs-2">Fahrenheit to Celsius</a></li>
+    <li><a href="#tabs-3">Pounds to Grams</a></li>
+  </ul>
+  
+  <div id="tabs-1">
+    <script>conversionTable(1, 25, 1);</script>
+  </div>
+  
+  <div id="tabs-2">
+    <script>conversionTable(1, 25, 2);</script>
+  </div>
+  
+  <div id="tabs-3">
+    <script>conversionTable(1, 25, 3);</script>
+  </div>
+  
+</div>
+ 
+</body>
+</html>

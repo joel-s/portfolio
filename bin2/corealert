@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+# corealert
+
+# Joel wrote this script to watch for core dumps from SMS daemons.
+
+
+checkCoreFile() {
+	typeset coreDaemon=$(file /var/tmp/core | cut -s -d \' -f 2)
+	if [ -n "$coreDaemon" ]; then  # New core file found...
+		printf "\anew core file found...\n\a"
+		dterror.ds "New core file found on $(uname -n)." "Error" "OK"
+
+		# Choose a new file name
+		typeset -i n=0
+		while [ -e /var/tmp/core.$coreDaemon$n ]; do
+			n=$(($n + 1))
+		done
+
+		mv /var/tmp/core /var/tmp/core.$coreDaemon$n
+		if [ $? == 0 ]; then
+			chmod a+rw /var/tmp/core.$coreDaemon$n
+			printf "new daemon core file moved to /var/tmp/core.$coreDaemon$n\n"
+		fi
+	fi
+}
+
+while true; do
+	checkCoreFile
+	sleep 1
+done

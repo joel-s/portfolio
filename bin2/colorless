@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+#   This file echoes a bunch of color codes to the 
+#   terminal to demonstrate what's available.  Each 
+#   line is the color code of one forground color,
+#   out of 17 (default + 16 escapes), followed by a 
+#   test use of that color on all nine background 
+#   colors (default + 8 escapes).
+#
+
+sed -e 's/^\(.*: \[[0-9]* [0-9]* DEBU.*\)$/[32m\1[0m/g' |
+sed -e 's/^\(.*: \[[0-9]* [0-9]* INFO.*\)$/[36m\1[0m/g' |
+sed -e 's/^\(.*: \[[0-9]* [0-9]* NOTI.*\)$/[37m\1[0m/g' |
+sed -e 's/^\(.*: \[[0-9]* [0-9]* WARN.*\)$/[1;33m\1[0m/g' |
+sed -e 's/^\(.*: \[[0-9]* [0-9]* ERR .*\)$/[1;31m\1[0m/g' |
+sed -e 's/^\(.*: \[[0-9]* [0-9]* CRIT.*\)$/[1;35m\1[0m/g' |
+sed -e 's/^\(.* fomd\[[0-9]*\].*\)$/[40m\1/g' |
+sed -e 's/\( [0-9]*\]\)/\1\
+      /g' |
+less -r

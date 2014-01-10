@@ -1,0 +1,3 @@
+#!/bin/bash
+$CODEMGR_WS/public/bin/keywords $(/usr/bin/find . -name 's.*' -print |
+    /usr/bin/grep 'SCCS/s.' |/usr/bin/sed -e "s|SCCS/s\.||g")

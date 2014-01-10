@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# HACK
+if [ ! -e cd.toc ]; then
+    set -e
+    cd $1
+    set +e
+    set ""
+    shift
+fi
+
+if [ $# -eq 0 ]; then
+    # HACK right now all I have is 12x discs :-]
+    echo Will write CD at speed 12
+    SPEEDOPT="--speed 12"
+##     echo Will write CD at max speed
+else
+    echo Will write CD at speed $1
+    SPEEDOPT="--speed $1"
+    shift
+fi
+
+if [ $# -eq 0 ]; then
+    eject -t
+    sleep 5
+    cdrdao write $SPEEDOPT --eject cd.toc
+    beep
+else
+    # $@ is a list of dirs; CD into each one
+    for dir in $@; do
+        printf "Insert blank CD and press enter:"
+        read
+        eject -t
+        sleep 7
+        cd $dir
+        echo --- STARTED: $dir ---
+        cdrdao write $SPEEDOPT --eject cd.toc
+        echo --- FINISHED: $dir ---
+        cd -
+        beep
+    done
+fi

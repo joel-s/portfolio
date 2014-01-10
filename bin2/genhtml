@@ -1,0 +1,91 @@
+#! /usr/bin/env python
+
+# Sun proprietary. Internal use only.
+
+# This file is indented with four-column tab characters.
+
+# SCCS ID: "%Z%%M%  %I% %E% SMI"
+
+"""
+
+genhtml
+
+usage: genhtml text-file-name
+
+"""
+
+import sys
+import string
+import os
+import time
+import re
+
+def die(s):
+    sys.stderr.write(os.path.basename(sys.argv[0]) +": " +s)
+    sys.exit(2)
+
+def usage(s=None):
+    progName = os.path.basename(sys.argv[0])
+    if s:
+        sys.stderr.write(progName +": " +s +"\n")
+    sys.stderr.write("usage: " +progName +" format-file\n")
+    sys.exit(2)
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    if len(args) != 1:
+        usage()
+
+    txtName = args[0]
+    if not txtName.endswith(".txt"):
+        die("argument name doesn't end with .txt")
+
+    htmlName = txtName[:-4] + ".html"
+
+    inp = open(txtName, "r")
+    outp = open(htmlName, "w")
+
+    title = inp.readline()[:-1]
+
+    currentTime = time.ctime(time.time())
+
+    header = """\
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>%(title)s</title>
+  </head>
+
+  <body>
+<h2>
+%(title)s
+</h2>
+
+<i>Auto-generated from <a href="%(txtName)s">%(txtName)s</a> on
+%(currentTime)s</i>
+
+<hr>
+
+<pre>
+""" % locals()
+
+    outp.write(header)
+
+    # translate URLs into links
+    text = inp.read()
+    text = text.replace("&", "&amp;")
+    text = text.replace("<", "&lt;")
+
+    ##urlPat = re.compile(r"http://[-a-zA-Z/_%]*")
+    urlPat = re.compile(r"http://[^ \t\n\r\"),]+")
+
+    while 1:
+        m = urlPat.search(text)
+        if m is None:
+            outp.write(text)
+            break
+        outp.write(text[:m.start()])
+        url = m.group(0)
+        outp.write('<a href="' + url + '">' + url +'</a>')
+        text = text[m.end():]
+        

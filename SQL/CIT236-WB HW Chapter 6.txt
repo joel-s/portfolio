@@ -1,0 +1,79 @@
+1.
+CREATE VIEW contact
+  AS SELECT name, contact, phone
+  FROM publisher;
+  
+View created.
+
+
+2.
+CREATE OR REPLACE VIEW contact
+  AS SELECT name, contact, phone
+  FROM publisher
+  WITH READ ONLY;
+  
+View created.
+
+
+3.
+CREATE FORCE VIEW homework13
+  AS SELECT Col1, Col2
+  FROM firstattempt;
+  
+Error at line 0: ORA-00942: table or view does not exist
+	
+
+4.
+DESC homework13
+
+Object Type VIEW Object HOMEWORK13         
+
+Table Column Data Type Length Precision Scale Primary Key Nullable Default Comment 
+HOMEWORK13 COL1 UNDEFINED 0 -  -  -   -  -  
+  COL2 UNDEFINED 0 -  -  -   -  -  
+ 
+
+5.
+CREATE VIEW reorderinfo
+  AS SELECT isbn, title, contact, phone
+    FROM books JOIN publisher USING (pubid);
+    
+View created.
+
+
+6.
+UPDATE reorderinfo
+  SET contact = 'JOEL SULLIVAN'
+  WHERE contact = 'JANE TOMLIN';
+ 
+ORA-01779: cannot modify a column which maps to a non key-preserved table 
+In other words we can't change data in a non-primary table. 
+
+  
+7.
+UPDATE reorderinfo
+  SET isbn = 12345
+  WHERE title = 'SHORTEST POEMS';
+  
+ORA-02292: integrity constraint (US_3437_SQL01_S22.ORDERITEMS_ISBN_FK) violated - child record found 
+In other words the old ISBN is referenced by the ORDERITEMS table.
+
+
+8.
+DELETE FROM reorderinfo
+  WHERE contact = 'JANE TOMLIN';
+  
+ORA-02292: integrity constraint (US_3437_SQL01_S22.BOOKAUTHOR_ISBN_FK) violated - child record found
+In other words, the bookauthor table references this book(s).
+
+
+9.
+ROLLBACK;
+
+Statement processed.
+
+
+10.
+DROP VIEW reorderinfo;
+
+View dropped.

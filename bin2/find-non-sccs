@@ -1,0 +1,24 @@
+#!/bin/bash
+
+##progname=$(basename $0)
+
+##usage() {
+##  if [ $# -ne 0 ]; then
+##    echo "$progname: $*"
+##  fi
+##  echo "usage: $progname regexp"
+##  exit 2
+##}
+
+if [ $# -eq 0 ]; then
+  set .
+fi
+
+for file in $(find "$@" -name SCCS -prune -o -name SunWS_cache -prune -o \
+				-type f); do
+	if [ ! -e "$(dirname "$file")/SCCS/s.$(basename "$file")" ]; then
+		print $file
+	fi
+done \
+  | /usr/xpg4/bin/grep -v -e '^\.nfs' -e '\.make\.state'$ -e '~'$ -e '#'$ \
+  -e '\.rlog' -e '\.log' -e '\.res'

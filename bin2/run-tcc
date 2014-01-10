@@ -1,0 +1,3 @@
+export TET_ROOT=/ws/esms-app1.0-tools/tet/3.7-lite
+export PYTHONPATH=/home/joelsu/tmp/pytet:/home/joelsu/tmp/pyunit_0.1
+$TET_ROOT/bin/tcc "$@"

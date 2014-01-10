@@ -1,0 +1,46 @@
+body {
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 80%;
+	padding: 20px 50px;
+}
+
+h1 {
+	color: #8F6048;
+}
+
+h2 {
+	color: #2A75A9;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 20px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	border-top: 1px solid #2A75A9;
+	margin: 20px 0px 10px 0px;
+}
+
+div {
+	color: #8F6048;
+}
+
+h3 {
+	color: #DFC184;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 20px;
+	padding-top: 8px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+} 	
+
+th {
+	width: 100px;
+	text-align: right;
+	padding: 0px 5px;
+}
+
+td {
+	padding: 0px 5px;
+}
+
+input:focus, textarea:focus {
+	border: 2px solid #2A75A9;
+}

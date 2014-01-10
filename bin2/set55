@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -v
+
+hfctrl esmd sets IO0 AR0 = 55
+hfctrl esmd sets IO0 SBBC = 55
+hfctrl esmd sets IO0 SDC0 = 55
+hfctrl esmd sets IO0 SCHIZO0 = 55
+hfctrl esmd sets IO0 SCHIZO1 = 55
+hfctrl esmd sets IO0 PS0 = 55
+hfctrl esmd sets IO0 PS1 = 55

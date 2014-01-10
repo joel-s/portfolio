@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CURVOL=`aumix -vq | tail -c +5 | cut -d, -f1`
+if [ $CURVOL == 0 ]; then
+    aumix -v 0`cat $HOME/.mute` -c 0`cat $HOME/.mute`
+else
+    echo $CURVOL >$HOME/.mute
+    aumix -v 0 -c 0
+fi

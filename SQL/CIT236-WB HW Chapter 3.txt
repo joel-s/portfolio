@@ -1,0 +1,92 @@
+1.
+CREATE TABLE category (CatCode VARCHAR2(2), CatDesc VARCHAR(10));
+
+Table created.
+
+
+2.
+CREATE TABLE employees
+ (emp# NUMBER(5),
+  lastname VARCHAR2(20),
+  firstname VARCHAR2(20),
+  job_class VARCHAR2(4));
+  
+ORA-00955: name is already used by an existing object
+
+CREATE TABLE employees2
+ (emp# NUMBER(5),
+  lastname VARCHAR2(20),
+  firstname VARCHAR2(20),
+  job_class VARCHAR2(4));
+  
+Table created.
+
+
+3.
+ALTER TABLE employees2 ADD
+ (empdate DATE DEFAULT SYSDATE,
+  enddate DATE);
+
+Table altered.
+
+
+4.
+ALTER TABLE employees2 MODIFY (job_class VARCHAR2(2));
+
+Table altered.
+
+
+5.
+ALTER TABLE employees2 DROP COLUMN enddate;
+
+Table altered.
+
+
+6.
+RENAME employees2 TO jl_emps;
+
+Statement processed.
+
+
+7.
+CREATE TABLE book_pricing (id, cost, retail, category)
+  AS (SELECT isbn, cost, retail, category
+        FROM books);
+        
+Table creted.
+
+
+8.
+ALTER TABLE book_pricing SET UNUSED (category);
+
+Table altered.
+
+
+9.
+TRUNCATE TABLE book_pricing;
+
+Table truncated.
+
+SELECT * 
+  FROM book_pricing;
+  
+no data found
+
+
+10.
+DROP TABLE book_pricing PURGE;
+
+Table dropped.
+
+DROP TABLE jl_emps;
+
+Table dropped.
+
+FLASHBACK TABLE jl_emps TO BEFORE DROP;
+
+Statement processed.
+
+SELECT *
+  FROM jl_emps;
+  
+no data found

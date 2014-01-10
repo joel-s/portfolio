@@ -1,0 +1,33 @@
+#!/bin/sh 
+# netscapestaroffice
+# Dan Anderson >daniel.anderson@Sun.COM< 02/2000
+#
+# Run StarOffice from Netscape
+# See http://webhome.central/anderson/netscapestaroffice.html
+#
+# To setup in Netscape, Edit -> Preferences -> Navigator -> Applications 
+# 
+# Description:	StarOffice document 
+# MIMEType:	application/staroffice
+# Handled by:	/home/<my_login_name>/bin/netscapesoffice %s 
+# Suffixes:	sxc,stc,sxd,std,sxi,sti,sxw,stw,sda,sdc,sdd,sdw,sds,sgl,smf,vor
+# Handled by:	Application	/home/<my_login_name>/bin/netscapesoffice %s 
+#
+# (Replace <my_login_name> with your Solaris login name (e.g., "danx"))
+#
+# (This information is saved in $HOME/.mailcap)
+#
+LD_LIBRARY_PATH=/usr/dt/lib
+export LD_LIBRARY_PATH
+
+if [ ! -f "${1}" ] ; then
+	echo "Missing document filename: $1." >/home/joelsu/tmp/soErrors
+	exit 1
+fi
+
+TMPDOCFILE="/tmp/t_$$_`basename \"${1}\"`" 
+cp "${1}" "${TMPDOCFILE}" 
+
+soffice7 -f "${TMPDOCFILE}" 
+
+rm -f "${TMPDOCFILE}"

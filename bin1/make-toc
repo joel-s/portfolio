@@ -1,0 +1,14 @@
+#!/bin/bash
+TABLENAME=$1
+BASENAME=${TABLENAME%.table}
+BASENAME=${BASENAME##*/}
+TOCNAME=$BASENAME.toc
+
+#set -xe
+
+if [ -e $TOCNAME ]; then
+    echo "$TOCNAME already exists"
+    exit 2
+fi
+
+cat $TABLENAME | table-to-toc > $TOCNAME

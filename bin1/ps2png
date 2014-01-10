@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Convert Letter-size PostScript or PDF file to landscape PNG
+# usage: ps2png infile outfile [fgcolor [bgcolor]]
+
+# Opt-parsing code borrowed from /usr/bin/batch
+
+# Set defaults
+bgcolor=""
+fgcolor=""
+genthumb=""
+needAcroread=""
+
+set -e
+
+usage() {
+    if [ $# -ne 0 ]; then
+        echo "`basename $0`: $*" >&2
+        echo "usage: `basename $0` [-t] [-b bg] [-f fg] infile [outfile]" >&2
+        exit 2
+    fi  
+}
+
+while getopts "b:f:t" Option; do
+    case $Option in
+        b) bgcolor="$OPTARG";;
+        f) fgcolor="$OPTARG";;
+        t) genthumb=1;;
+        ?) usage;;
+        *) usage "unimplemented option chosen (?)";;   # DEFAULT
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+if [ $# -lt 1 -o $# -gt 2 ] ; then
+    usage "wrong number of command-line arguments" >&2
+fi
+
+SRCNAME=$1
+BASENAME=${SRCNAME%.pdf}
+BASENAME=${BASENAME%.ps}
+BASENAME=${BASENAME##*/}
+DESTNAME=${2-$BASENAME.png}
+
+if [ ! -r $SRCNAME ]; then
+    echo "cannot read $SRCNAME"
+    exit 2
+fi
+
+if [ -e $DESTNAME ]; then
+    echo "$DESTNAME already exists"
+    exit 2
+fi
+
+# green = -f "#c2c944" -b "#556b2f"
+# orange = -f "#ffa500" -b "#c14b15"
+
+echo "converting $SRCNAME to $DESTNAME..."
+if [ $SRCNAME != ${SRCNAME%.pdf} ]; then
+    # it's a PDF file -- need to use acroread first
+    psname=/tmp/tmp$$.ps
+    acroread -toPostScript -pairs $SRCNAME $psname
+    cat $psname | gs -q -sDEVICE=png16m -r192x192 -sOutputFile=$DESTNAME -
+    rm $psname
+else
+    cat $SRCNAME | gs -q -sDEVICE=png16m -r192x192 -sOutputFile=$DESTNAME -
+fi
+echo "coloring/resizing $DESTNAME..."
+if [ x"$fgcolor" != x"" ]; then
+    mogrify -fill "$fgcolor" -opaque black $DESTNAME
+fi
+if [ x"$bgcolor" != x"" ]; then
+    mogrify -fill "$bgcolor" -opaque white $DESTNAME
+fi
+if [ $genthumb ]; then
+    THUMBNAME="$BASENAME--thumb.png"
+    cp $DESTNAME $THUMBNAME
+    mogrify -geometry 201x264! -rotate 90 $THUMBNAME
+fi
+mogrify -geometry 402x528! -rotate 90 $DESTNAME

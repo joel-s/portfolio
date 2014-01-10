@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -ex
+cp /var/opt/SUNWSMS/.pcd/sysboard_info /var/opt/SUNWSMS/.pcd/sysboard_info.bkup
+sed -e 's/^\([^:]*:[^:]*:\)[^:]*:/\1 :/g' \
+  /var/opt/SUNWSMS/.pcd/sysboard_info.bkup \
+  >/var/opt/SUNWSMS/.pcd/sysboard_info
+chown sms-pcd /var/opt/SUNWSMS/.pcd/sysboard_info

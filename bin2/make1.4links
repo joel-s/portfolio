@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for d in /opt/SUNWSMS /etc/opt/SUNWSMS /var/opt/SUNWSMS; do
+    cd $d
+    if [ ! -h SMS1.4 ]; then
+        if [ -e SMS1.4 ]; then
+            echo "error: 'SMS1.4' already exists in $d"
+            exit 1
+        fi
+        ln -s SMS1.3 SMS1.4
+    fi
+done

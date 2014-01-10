@@ -1,0 +1,22 @@
+#!/bin/bash
+
+file="$1"
+
+export SMSLOGGER_LEVEL=crit
+
+while true; do
+	printf "$(date) ** " >> "$file.alltimes"
+	out="$(/opt/SUNWSMS/bin/showenvironment | sed -e /FANTRAY/,\$d \
+	  | sort -n -k 1.54,1.62 | tail -1)"
+	printf "%s\n" "$out" >> "$file-all.scriptout"
+
+	sleep 2
+		
+	printf "$(date) ** " >> "$file.cputimes"
+	out="$(/opt/SUNWSMS/bin/showenvironment -p temps | grep PROC \
+	  | sort -n -k 1.54,1.62 | tail -1)"
+	printf "%s\n" "$out" >> "$file-cpu.scriptout"
+	tail -1 "$file.cputimes"
+
+	sleep 2
+done

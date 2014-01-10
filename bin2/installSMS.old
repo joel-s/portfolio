@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# This script is for installing SMS on a workstation. The script will not 
+
+# usage: $0 [-l] buildname
+# -l means re-install the lab package too
+
+usage() {
+  echo "usage: $0 [-hl] packageDir"
+  echo "  -h: disable hwad and daemons that rely on it, in ssd_start"
+  echo "  -l: also reinstall lab package"
+  echo "  -o: disable osd, in ssd_start"
+  echo "  sample package dir: /ws/sms1.0_gate/packages/sparc/sms1.0_16"
+  exit 2
+}
+
+disableHwad=
+newLabPkg=
+disableOsd=
+
+while getopts hlo opt; do
+  case $opt in
+    h)
+	  disableHwad=1
+      ;;
+    l)
+	  newLabPackage=1
+      ;;
+    o)
+	  disableOsd=1
+      ;;
+  esac
+done
+
+shift $(( $OPTIND - 1 ))
+
+
+if [ $# != 1 ]; then
+  usage
+fi
+
+
+smsPkgDir=$1
+labPkgDir=/net/on998-dhpg/export/workspace/sc-integ/pkgarchive
+
+adminFile=/home/ryan/.admin
+
+ssdStart=/etc/opt/SUNWSMS/startup/ssd_start
+
+
+# uninstall and reinstall SMS
+if pkginfo -q SUNWSMSop; then
+	if pgrep ssd >/dev/null; then
+		echo "SSD is running; stopping SMS"
+		/etc/init.d/sms stop
+		sleep 1
+		# check for sms processes still running, maybe even use ssd_start file
+	fi
+
+	# uinistall lab package if necessary
+	if [ $newLabPkg ] && pkginfo -q SCLab; then
+		set -xe
+		pkgrm -n -a $adminFile SCLab
+		set +xe
+	fi
+
+	set -xe
+	pkgrm -n -a $adminFile `pkginfo | grep SUNWSMS | cut -c 13-25`
+	rm -rf /opt/SUNWSMS /var/opt/SUNWSMS /etc/opt/SUNWSMS
+	set +xe
+fi
+
+set -xe
+printf "7,1-6,8\nq\n" |
+pkgadd -a $adminFile -d $smsPkgDir
+echo "y" | /opt/SUNWSMS/bin/sms_config sysidsms
+set +xe
+
+if [ $disableHwad ]; then
+	set -xe
+	mv $ssdStart $ssdStart.orig
+	sed\
+	  -e 's/^hwad/#hwad/g'\
+	  -e 's/^osd/#osd/g'\
+	  -e 's/^esmd/#esmd/g'\
+	  -e 's/^dsmd/#dsmd/g'\
+	  -e 's/^dxs/#dxs/g'\
+	  $ssdStart.orig >$ssdStart
+	set +xe
+fi
+
+if [ $disableOsd ]; then
+	set -xe
+	mv $ssdStart $ssdStart.orig
+	sed\
+	  -e 's/^osd/#osd/g'\
+	  $ssdStart.orig >$ssdStart
+	set +xe
+fi
+
+# reinstall lab package if necessary
+if [ $newLabPkg ]; then
+	set -xe
+##	printf "\nq\n" | 
+	pkgadd -a $adminFile -d $labPkgDir -n all
+	set +xe
+fi

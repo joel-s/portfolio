@@ -1,0 +1,50 @@
+#!/bin/bash
+
+
+progname=$(basename $0)
+
+usage() {
+  if [ $# -ne 0 ]; then
+    echo "$progname: $*"
+  fi
+  echo "usage: $progname [-bborder] [infile [outfile]]"
+  exit 2
+}
+
+
+nupOpts=
+
+while getopts b: opt; do
+  case $opt in
+    b)
+      nupOpts=$nupOpts" -b$OPTARG"
+      ;;
+  esac
+done
+
+shift $(( $OPTIND - 1 ))
+
+
+if [  $# -gt 2 ]; then
+  usage "too many arguments ($#)"
+fi
+
+
+if [ $# -ge 1 ]; then
+  infile="$1"
+else
+  infile=-
+fi
+
+cat "$infile" | \
+ psbook | psnup -2 -Pletter -plegal $nupOpts | \
+ pstops -plegal 2:-1,-0U\(1w,1h\) |
+# OR pstops -plegal 2:0,1U\(1w,1h\) |  # this prints first page first
+
+if [ $# -ge 2 ]; then
+  # Copy shell standard input to a file.
+  cat > "$2"
+else
+  # Copy shell standard input to standard output.
+  cat
+fi

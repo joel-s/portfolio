@@ -1,0 +1,45 @@
+#!/bin/bash
+
+prog=$(basename $0)
+
+usage() {
+	echo "usage: $prog"
+	exit 2
+}
+
+die() {
+    if [ $# != 0 ]; then
+        echo "$prog: $*"
+    fi
+    exit 2
+}
+
+
+if [ $# -gt 1 ]; then
+    usage
+fi
+
+
+DEST_DIR=/workspace/joelsu/logarc-backup
+
+
+# ** -e: TOLERATE NO ERRORS **
+set -e
+
+if [ $# -gt 0 ]; then
+    NEXT_NUM=$1
+else
+    LAST_FILE=$(ls $DEST_DIR/all.*.tar.gz | tail -1)
+    FILE_NUM=${LAST_FILE#*all.}
+    FILE_NUM=${FILE_NUM%.tar.gz}
+    NEXT_NUM=$(expr $FILE_NUM + 1)
+fi
+
+TAR_FILE=$(printf $DEST_DIR/all.%02d.tar.gz $NEXT_NUM)
+
+cd /workspace/joelsu 
+gtar -cpvz --exclude="docs" -f $TAR_FILE logarc
+echo "created $TAR_FILE"
+cd $DEST_DIR
+rm -f all.tar.gz
+ln -s $TAR_FILE all.tar.gz

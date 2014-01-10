@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# This script is for installing SMS on a workstation. The script will not 
+
+# usage: $0 [-l] buildname
+# -l means re-install the lab package too
+
+usage() {
+  echo "usage: $(basename $0) workspacedir name"
+  echo "  creates bin.name and lib.name"
+  echo "  example: $(basename $0) /workspace/joelsu/sms1.2 joel"
+  exit 2
+}
+
+## disableHwad=
+## newLabPkg=
+## disableOsd=
+
+## while getopts hlo opt; do
+##   case $opt in
+##     h)
+## 	  disableHwad=1
+##       ;;
+##     l)
+## 	  newLabPackage=1
+##       ;;
+##     o)
+## 	  disableOsd=1
+##       ;;
+##   esac
+## done
+
+## shift $(( $OPTIND - 1 ))
+
+
+if [ $# != 2 ]; then
+	usage
+fi
+
+workspace=$1
+name=$2
+
+if [ ! -e $1 ]; then
+	usage
+fi
+
+cd /opt/SUNWSMS/SMS
+
+# Auto-guess which dir is original
+# OLDEST???
+## for n in orig or o; do
+## 	if [ -e
+
+# Remove symlinks if necessary
+for dir in lib bin; do
+	if [ -e $dir ]; then
+		if [ -L $dir ]; then
+			echo "remvoving symlink: $dir"
+			rm $dir
+		else
+			echo "fatal error: $dir exists and is not a symlink"
+			exit 1
+		fi
+	fi
+done	
+
+set -ex
+
+#mv lib lib.o
+#mv bin bin.o
+orig="o"
+
+# copy files w/ permissions
+cp -Rp lib.$orig lib.$name
+cp -Rp bin.$orig bin.$name  
+ln -s lib.$name lib
+ln -s bin.$name bin
+
+set +ex
+
+# copy files w/o changing permissions
+cp $workspace/proto/root_sparc/opt/SUNWSMS/lib/* lib
+cp $workspace/proto/root_sparc/opt/SUNWSMS/bin/* bin

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# usage: v          -- list contents of current directory
+#        v dir      -- list contents of a directory
+#        v file...  -- show files (excluding directories)
+
+if [ $# -eq 0 ]; then
+  ls -alF | less
+elif [ $# -eq 1 -a -d "$1" ]; then
+  ls -alF "$1" | less
+else
+  files=
+  for file in "$@"; do
+    if [ ! -d "$file" ]; then
+      files="$files \"$file\""
+    fi
+  done
+  eval less $files
+fi

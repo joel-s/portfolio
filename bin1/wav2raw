@@ -1,0 +1,20 @@
+#!/bin/bash
+WAVNAME=$1
+BASENAME=${WAVNAME%.wav}
+BASENAME=${BASENAME##*/}
+RAWNAME=${2-$BASENAME.raw}
+
+#set -xe
+
+if [ ! -r $WAVNAME ]; then
+    echo "cannot read $WAVNAME"
+    exit 2
+fi
+
+if [ -e $RAWNAME ]; then
+    echo "$RAWNAME already exists"
+    exit 2
+fi
+
+sox -t wav $WAVNAME -t raw $RAWNAME
+

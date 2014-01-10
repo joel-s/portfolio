@@ -1,0 +1,29 @@
+#!/bin/env python
+import sys
+
+if len(sys.argv) != 3:
+    sys.stderr.write("usage: %s search-string first-number\n" % sys.argv[0])
+    sys.exit(2)
+
+pattern = sys.argv[1]
+patternLen = len(pattern)
+number = int(sys.argv[2])
+
+# Replace occurences of a string with consecutive integers.
+
+# The replacement numbers are padded with "0" to the width of the regexp.
+
+for line in sys.stdin.readlines():
+
+    index = 0
+    while 1:
+        index = line.find(pattern, index)
+        if index == -1:
+            break
+        numStr = str(number)
+        numStr = "0" * (patternLen - len(numStr)) + numStr
+        line = line[:index] + numStr + line[index+patternLen:]
+        number += 1
+        index += patternLen
+
+    sys.stdout.write(line)

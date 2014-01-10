@@ -1,0 +1,61 @@
+#!/usr/bin/env python2
+
+"""
+Remove silence from the beginning of a RAW AUDIO file. (It must be a 16-bit
+2-channel file.)
+
+This could be done for WAV files using the wave.py module (but I don't feel
+like learning about WAVs at the moment).
+
+"""
+
+import sys
+import string
+import os
+import shutil
+import struct
+
+THRESHOLD = 0x200
+
+def silentWordCount(filename):
+    input = open(filename, "rb")
+    i = 0
+    while 1:
+        ch0 = struct.unpack("h", input.read(2))[0]
+        if abs(ch0) > THRESHOLD: break
+        ch1 = struct.unpack("h", input.read(2))[0]
+        if abs(ch1) > THRESHOLD: break
+        i += 1
+    input.close()
+    return i
+
+def chompSilence(filename):
+    silentWords = silentWordCount(filename)
+    if silentWords == 0:
+        return 0
+    os.rename(filename, filename +".TEMP")
+    src = filename +".TEMP"
+    dst = filename
+
+    try:
+        fsrc = open(src, "rb")
+        fdst = open(dst, "wb")
+        fsrc.seek(4*silentWords)
+        shutil.copyfileobj(fsrc, fdst)
+    finally:
+        if fdst:
+            fdst.close()
+        if fsrc:
+            fsrc.close()
+  
+    shutil.copystat(src, dst)
+    os.unlink(src)
+    return silentWords
+
+if len(sys.argv) != 2:
+    sys.stderr.write("usage: " +os.path.basename(argv[0]) +" file\n")
+    sys.exit(2)
+
+chomped = chompSilence(sys.argv[1])
+if chomped == 0:
+    sys.stderr.write(os.path.basename(argv[0]) +": no silence to chomp\n")

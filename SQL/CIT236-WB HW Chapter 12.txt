@@ -1,0 +1,144 @@
+1.
+SELECT title, retail 
+  FROM books
+  WHERE retail < (SELECT AVG(retail)
+                    FROM books);
+                    
+TITLE RETAIL 
+BODYBUILD IN 10 MINUTES A DAY 30.95 
+REVENGE OF MICKEY 22 
+COOKING WITH MUSHROOMS 19.95 
+HANDCRANKED COMPUTERS 25 
+THE WOK WAY TO COOK 28.75 
+BIG BEAR AND LITTLE DOVE 8.95 
+HOW TO GET FASTER PIZZA 29.95 
+HOW TO MANAGE THE MANAGER 31.95 
+SHORTEST POEMS 39.95 
+
+
+2.
+SELECT title, cost, category, catavg
+  FROM books JOIN (SELECT category, AVG(cost) catavg
+                     FROM books
+                     GROUP BY category)
+    USING (category)
+  WHERE cost < catavg;
+  
+TITLE COST CATEGORY CATAVG 
+HANDCRANKED COMPUTERS 21.8 COMPUTER 34.5875 
+DATABASE IMPLEMENTATION 31.4 COMPUTER 34.5875 
+COOKING WITH MUSHROOMS 12.5 COOKING 15.75 
+BIG BEAR AND LITTLE DOVE 5.32 CHILDREN 21.56 
+REVENGE OF MICKEY 14.2 FAMILY LIFE 31.1 
+
+
+3.
+SELECT order#
+  FROM orders
+  WHERE shipstate = (SELECT shipstate
+                       FROM orders
+                       WHERE order# = 1014);
+                       
+ORDER# 
+1014 
+
+
+	4.
+SELECT order#, SUM(quantity*paideach)
+  FROM orders JOIN orderitems using (order#)
+  GROUP BY order#
+  HAVING SUM(quantity*paideach) > (SELECT SUM(quantity*paideach)
+                                     FROM orders JOIN orderitems using (order#)
+                                     WHERE order# = 1008);
+                                     
+ORDER# SUM(QUANTITY*PAIDEACH) 
+1003 106.85 
+1011 85.45 
+1013 55.95 
+1016 85.45 
+1006 54.5 
+1001 117.4 
+1002 111.9 
+1004 170.9 
+1010 55.95 
+1005 39.95 
+1014 44 
+1012 166.4 
+1018 75.9 
+
+
+5.
+SELECT authorid
+  FROM bookauthor
+  WHERE isbn IN (SELECT isbn
+                   FROM orderitems
+                   GROUP BY isbn
+                   HAVING COUNT(isbn) = (SELECT MAX(COUNT(isbn))
+                                           FROM orderitems
+                                           GROUP BY isbn));
+                                           
+AUTHORID 
+B100 
+
+
+6.
+SELECT DISTINCT title
+  FROM books JOIN orderitems USING (isbn)
+    JOIN orders USING (order#)
+  WHERE category IN (SELECT DISTINCT category
+                       FROM books JOIN orderitems USING (isbn) 
+                         JOIN orders USING (order#)
+                       WHERE customer# = 1007)
+  AND isbn NOT IN (SELECT isbn
+                     FROM orderitems JOIN orders USING (order#)
+                     WHERE customer# = 1007);
+  
+TITLE 
+PAINLESS CHILD-REARING 
+
+
+7.
+SELECT shipcity, shipstate
+  FROM orders
+  WHERE shipdate-orderdate = (SELECT MAX(shipdate-orderdate)
+                                FROM orders);
+                                
+SHIPCITY SHIPSTATE 
+TRENTON NJ 
+
+
+8.
+SELECT customer#
+  FROM orders JOIN orderitems USING (order#)
+    JOIN books USING (isbn)
+  WHERE retail = (SELECT MIN(retail)
+                    FROM books);
+                    
+CUSTOMER# 
+1017 
+1015 
+
+
+9.
+SELECT COUNT(DISTINCT customer#)
+  FROM orders JOIN orderitems USING (order#)
+  WHERE isbn IN (SELECT isbn
+                   FROM bookauthor JOIN author USING (authorid)
+                   WHERE fname = 'JAMES' and lname = 'AUSTIN');
+
+COUNT(DISTINCTCUSTOMER#) 
+4 
+
+
+10.
+SELECT isbn, title
+  FROM books
+  WHERE pubid = (SELECT pubid
+                   FROM books
+                   WHERE title = 'THE WOK WAY TO COOK');
+                   
+ISBN TITLE 
+1059831198 BODYBUILD IN 10 MINUTES A DAY 
+3437212490 COOKING WITH MUSHROOMS 
+0299282519 THE WOK WAY TO COOK 
+0132149871 HOW TO GET FASTER PIZZA 

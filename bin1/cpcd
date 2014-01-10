@@ -1,0 +1,49 @@
+#!/bin/bash
+
+## if [ $# -eq 0 ]; then
+##     # HACK right now all I have is 12x discs :-]
+##     set 12
+## fi
+
+if [ $# -eq 0 ]; then
+    echo Will write CD at max speed
+else
+    echo Will write CD at speed $1
+    SPEEDOPT="--speed $1"
+fi
+eject
+echo Insert source CD and press enter:
+read
+eject -t
+cd /tmp  # so cd$$.toc file will not have hard-coded ref to /tmp/...
+#cdrdao read-cd --eject /tmp/cd$$.toc  # this didn't work
+cdrdao read-toc --datafile data$$.wav cd$$.toc
+cdparanoia 1- data$$.wav
+sleep 5
+eject
+beep
+COPYING=1
+while [ $COPYING ]; do
+    printf "Insert blank CD and press enter:"
+    read
+    eject -t
+    sleep 5
+    cdrdao write $SPEEDOPT --eject --datafile data$$.wav cd$$.toc
+    beep
+    while true; do
+        printf "Make another copy? (y/n) "
+        read RESPONSE
+        case $RESPONSE in 
+            y | Y | yes | YES )
+                break ;;
+            n | N | no | NO )
+                COPYING=
+                break ;;
+        esac
+        echo Invalid response.
+    done
+done
+printf "Press enter to delete TOC and image files:"
+beep
+read
+rm data$$.wav cd$$.toc

@@ -1,0 +1,3 @@
+#!/bin/bash
+cat > ~joelsu/tmp/lp_prev
+sdtimage ~joelsu/tmp/lp_prev &

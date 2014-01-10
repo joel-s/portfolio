@@ -1,0 +1,17 @@
+#!/bin/bash
+
+progname=$(basename $0)
+
+usage() {
+  if [ $# -ne 0 ]; then
+    echo "$progname: $*"
+  fi
+  echo "usage: $progname e-regexp"
+  exit 2
+}
+
+if [ $# -ne 1 ]; then
+  usage
+fi
+
+egrep "$1" /usr/include/sys/errno.h

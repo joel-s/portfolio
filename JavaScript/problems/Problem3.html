@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sliding Menus</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="javascript/jquery-1.9.1.js"></script>
+    <script type="text/javascript">
+    
+    	function loadPage(site) {
+    		document.iframe.location = "http://" + site;
+    	}
+    	
+    	function slideOut(selector) {
+    		$(selector).animate({left: "10px"});
+    		$(".menu:not(" + selector + ")").animate({left: "-350px"});
+    	}
+       
+	    $(function() {
+	    	slideOut("#golf");
+	    	
+            $("#golfBtn").hover(function() {
+                slideOut("#golf");
+            });
+            
+            $("#boatingBtn").hover(function() {
+                slideOut("#boating");
+            });
+            
+            $("#diningBtn").hover(function() {
+                slideOut("#dining");
+            });
+        });
+		
+		
+    </script>
+    <style type="text/css">
+   		div.background {
+   			width: 150px;
+            height: 80px;
+            margin: 0px 10px 20px 10px;
+            padding: 20px;
+   		} 
+    
+        div.menu {
+            width: 150px;
+            height: 80px;
+            margin: 0px 10px 20px 10px;
+            padding: 20px;
+            border: 2px solid black;
+            cursor: pointer;
+			position: absolute;
+			z-index: 1;
+        }
+        
+        div#golf {
+            background: #eef;
+		}
+		
+        div#boating {
+            background: #efe;
+		}
+
+        div#dining {
+            background: #fee;
+		}
+
+        button {
+        	background-color: #222;
+        	color: #fff;
+            margin: 5px;
+            border: none;
+        }
+        
+        iframe {
+        	float: right;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="golfBtn">Golf</button>
+    <button id="boatingBtn">Boating</button>
+    <button id="diningBtn">Dining</button>
+
+    <iframe name="iframe" src="" height="600" width="600"></iframe>
+    
+    <div id="golf" class="menu">
+    	
+    	<button onclick="loadPage('www.golf.com')">Golf.com</button><br />
+        <button onclick="loadPage('www.golflink.com')">GolfLink.com</button><br />
+
+    </div>
+    
+    <div id="boating" class="menu">
+    	
+    	<button onclick="loadPage('www.discoverboatin.com')">DiscoverBoating.com</button><br />
+        <button onclick="loadPage('www.boating.com')">Boating.com</button><br />
+
+    </div>
+    
+    <div id="dining" class="menu">
+    	
+    	<button onclick="loadPage('www.food.com')">Food.com</button><br />
+        <button onclick="loadPage('www.zagat.com')">Zagat: Restaurant Ratings</button><br />
+
+    </div>
+    
+	<div class="background">
+	</div>
+</body>
+</html>

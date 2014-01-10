@@ -1,0 +1,12 @@
+if [ $# -ne 1 ]
+then echo "usage: $0 command_name"
+exit 1
+fi
+echo $PATH|tr ":" "\n"|
+while read i
+do
+	(if ls ${i}/$1 >/dev/null 2>&1
+	then echo ${i}/$1
+	fi)
+done
+wait

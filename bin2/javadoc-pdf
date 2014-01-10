@@ -1,0 +1,59 @@
+#!/bin/bash
+
+if [[ $# -lt 2 ]]; then
+    # Too few options. User must want usage info.
+    cat <<-EOF
+	javadoc-pdf
+	  Simple shell script which runs javadoc with PDFDoclet options.
+	  By Joel Sullivan, based on example.sh included with PDFDoclet.
+	Example usage:
+	  javadoc-pdf -public -pdf ~/out.pdf -sourcepath ~/myjava com.x.a com.x.b
+        Run "javadoc -h" for help on javadoc.
+        Visit http://pdfdoclet.sourceforge.net/ for more info about PDFDoclet.
+	EOF
+    exit
+fi
+
+# Set the JAVA_HOME variable correctly !!
+JAVA_HOME=/usr/j2se
+PATH=$JAVA_HOME/bin:$PATH
+
+javadoc \
+  -doclet com.sun.tools.doclets.mif.MIFDoclet \
+  -docletpath /home/lc84234/MIFdoclet/mifdoclet1.2/lib/mifdoclet.jar \
+  -batch fmbatch \
+  -print pdf \
+  -noalmanac \
+  -nooverview \
+  -noinheritedsummary \
+  -indexstyle brief \
+  -booktitle "Common Utility Interface Specification" \
+  -booksubtitle "Classes Adapted from Serengeti SCAPP" \
+  -bookversion "Version 1.0" \
+  -bookauthor "Darrick Wong and Joel Sullivan" \
+  -bookpublisher "Sun Proprietary: Internal Use Only" \
+  -bookcopyright "Copyright 2003 Sun Microsystems, Inc." \
+  -d ~/tmp/jd-pdf \
+  -public \
+  -sourcepath /home/dw145094/Projects/eagle \
+  com.sun.esms.util com.sun.esms.util.text com.sun.esms.util.cache
+
+
+
+
+if [ -d /home/joelsu/src/PDFdoclet/binaries/jar ]; then
+    JARPATH=/home/joelsu/src/PDFdoclet/binaries/jar
+else
+    JARPATH=/net/esp.west/home/joelsu/src/PDFdoclet/binaries/jar
+fi
+
+DOCLET=com.tarsec.javadoc.pdfdoclet.PDFDoclet
+JARS=$JARPATH/itext-0.92.jar:$JARPATH/jakarta-regexp-1.2.jar:$JARPATH/pdfdoclet.jar
+
+export JAVA_HOME PATH DOCLET JARS
+
+
+# javadoc -doclet $DOCLET -docletpath $JARS -pdf example/results/html.pdf \
+# -config example/config_html.properties -private -sourcepath example/src2 $PACKAGES
+
+javadoc -doclet $DOCLET -docletpath $JARS "$@"

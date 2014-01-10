@@ -1,0 +1,20 @@
+#!/usr/bin/env python2
+
+"""
+Return the length in seconds of a RAW audio file. Assume it is a 16-bit,
+2-channel, 44100-Hz sample.
+
+"""
+
+import sys
+import os
+import stat
+
+if len(sys.argv) != 2:
+    sys.stderr.write("usage: " +os.path.basename(argv[0]) +" file\n")
+    sys.exit(2)
+
+size = os.stat(sys.argv[1])[stat.ST_SIZE]
+frames = size / 2352  # number of bytes per frame -- from cdrdao man page
+seconds = frames / 75  # number of frames per sec -- from cdrdao man page
+print "%02d:%02d:%02df" % (seconds/60, seconds%60, frames%75)
