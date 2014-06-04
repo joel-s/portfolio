@@ -1,3 +1,0 @@
-#!/bin/bash
-log=$(ls -1rt /var/opt/SUNWSMS/adm/?/post/post* | tail -1)
-less $log

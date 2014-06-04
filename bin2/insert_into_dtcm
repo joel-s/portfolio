@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-
-/usr/dt/bin/dtcm_insert -a $1

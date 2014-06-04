@@ -1,2 +1,0 @@
-#!/bin/sh
-cd /net/shorty.west/export/home3/jcpierce/seti-dhpg/v1 && exec ./start

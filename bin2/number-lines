@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# When using this program, tabs in the input are mutated into spaces with a
-# tab stop setting of 4.
-
-expand -4 | nl -ba -p -w3 | expand -6

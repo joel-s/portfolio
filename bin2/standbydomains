@@ -1,5 +1,0 @@
-#! /bin/bash
-
-for domain in $*; do
-    /opt/SUNWSMS/bin/setkeyswitch -y -d $domain standby
-done

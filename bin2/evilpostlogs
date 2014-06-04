@@ -1,3 +1,0 @@
-#!/bin/bash
-# list the POST logs with uid,gid = <number>,other
-ls -l /var/opt/SUNWSMS/adm/?/*/* | grep "[1-9][0-9]* *other" | awk '{print $9}'

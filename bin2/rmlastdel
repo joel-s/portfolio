@@ -1,4 +1,0 @@
-#!/bin/bash
-VER=$(sccs prt $1 | grep "^D " | head -1 | cut -f1 | cut -c3-)
-sccs rmdel -r$VER $1
-#cat ~/tmp/comment | 

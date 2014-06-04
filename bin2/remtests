@@ -1,6 +1,0 @@
-#!/bin/bash
-
-cat /home/dsteinke/docs/starcat/plans/sms1.2/sms1.2.statuschart/status.msg |\
-        egrep -v "is an orphan| [1-9] Hits,"
-
-

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-ping shorty
-ping udcsd2
-ping marvin
-ping on28-dhpg
-ping on998-dhpg

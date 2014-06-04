@@ -1,4 +1,0 @@
-#!/bin/sh
-if [ -n "$0" ]; then
-  chmod +x $1
-fi

@@ -1,6 +1,0 @@
-#!/usr/bin/env python
-import time, sys
-for c in ". ... .":
-	if c == ".":
-		sys.stdout.write("\a"); sys.stdout.flush()
-	time.sleep(.2)
