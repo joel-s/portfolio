@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 
 """
 
@@ -6,12 +6,14 @@ Generate sequences of words that are palindromes.
 
 Don't choose the same word more than once.
 
-This version tries to generate short Palindromes.
+Generate palindromes of increasing minimum length starting with 1.
 
-This requires Python 2 and sed.
+This requires Python 2 and "grep" and "sed", although it could have been
+done in "pure" Python.
 
 """
 
+import sys
 import string
 import commands
 import random
@@ -151,7 +153,7 @@ def palindromeWithSuffix(s, minWords, blacklist=()):
     Return None if unable to do so.
     
     """
-    global debugStack
+    if DEBUG: global debugStack
     
     if DEBUG: print " -D- palindromeWithSuffix(" +`s` +")"
 
@@ -164,7 +166,7 @@ def palindromeWithSuffix(s, minWords, blacklist=()):
             if word in blacklist: continue
             extraChars = word[:len(word)-len(s)]
             if isPalindrome(extraChars):
-                debugStack = traceback.format_stack()
+                if DEBUG: debugStack = traceback.format_stack()
                 return word
     
     # Find a longer word if possible
@@ -186,14 +188,14 @@ def palindromeWithSuffix(s, minWords, blacklist=()):
             if rest is not None:
                 return rest +" " +word
 
-for min in range(50):
+for min in range(1,50):
     print min
     print "-----"
     for i in range(5):
         pal = makePalindrome(min)
         print pal
         pal = pal.replace(" ", "")
-        if pal != reverseString(pal):
+        if DEBUG and pal != reverseString(pal):
             for line in debugStack:
                 print line
             sys.exit()

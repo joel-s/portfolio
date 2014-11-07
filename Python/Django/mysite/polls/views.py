@@ -7,6 +7,22 @@ from django.utils import timezone
 from polls.models import Choice, Poll
 
 
+def index_view(request):
+    """We could use generic.ListView, but let's do it as a function for kicks.
+    """
+    polls = Poll.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
+    return render(request, 'polls/index.html',
+        {'latest_poll_list': polls})
+
+def detailed_index_view(request):
+    polls = Poll.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
+    return render(request, 'polls/detailed_index.html',
+        {'latest_poll_list': polls})
+
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_poll_list'
