@@ -1,0 +1,39 @@
+These are various Python scripts I wrote for fun.
+
+In order of increasing number of lines:
+
+Lines Words Chars
+-----------------
+   27   103   829 nth-permutation.py
+                  ^ Get the Nth permutation of a set of consecutive numbers.
+
+   41    98   917 single-row-words.py
+                  ^ Find the longest words that can be typed with a single
+                    row of the keyboard.
+
+   45   125  1190 pascals-triangle.py
+                  ^ Print out ASCII art based on Pascal's triangle.
+
+   53   267  1873 coin-combinations.py
+                  ^ Count combinations of coins that add up to X.
+
+   59   205  1700 eight-queens.py
+                  ^ Find and count the ways eight queens can be placed on
+                    a chess board without any of them being under attack.
+
+   74   255  1965 bitmap-to-numbers.py
+                  ^ Convert a bitmap represented as text into a sequence of
+                    16-bit numbers, and convert it back to text.
+
+   84   252  1795 poetry.py
+                  ^ My solution to the "Python Poetry" puzzle:
+                        http://puzzles.bostonpython.com/poetry.html
+
+  129   389  4102 make-and-view-triangle-field.py
+                  ^ Generate a recursive triangular pattern of circles as an
+                    OpenOffice drawing document and open it in an OpenOffice
+                    window. Requires the odf package.
+
+  199   650  5462 make-palindromes.py
+                  ^ Generate random palindromes at least N words long,
+                    for increasing values of N.
