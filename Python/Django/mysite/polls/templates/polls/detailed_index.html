@@ -1,0 +1,14 @@
+{% if latest_poll_list %}
+    <ul>
+    {% for poll in latest_poll_list %}
+        <li><a href="{% url 'polls:detail' poll.id %}">{{ poll.question }}</a></li>
+        <ul>
+          {% for choice in poll.choice_set.all %}
+            <li>{{ choice.choice_text }}: {{ choice.votes }}</li>        
+          {% endfor %}
+        </ul>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
