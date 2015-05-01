@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+<!-- 
+Based on calculator.html from QuickStart: PHP for the Web, p.75.
+-->
+
+<head>
+
+<title>Product Cost Calculator</title>
+</head>
+
+<body>
+
+<div>
+
+<h2>Fill out this form to calculate the total cost:</h2>
+
+<form action="handle_calc.php" method="post">
+
+<p>Price: <input type="text" name="price" size="5" /></p>
+
+<p>Quantity: <input type="text" name="quantity" size="5" /></p>
+
+<p>Discount: <input type="text" name="discount" size="5" /></p>
+
+<p>Tax: <input type="text" name="tax" size="3" /> (%)</p>
+
+<p>Shipping animal: <select name="shipping">
+	<option value="5.00">Turtle</option>
+    <option value="8.95">Camel</option>
+    <option value="19.36">Race horse</option>
+</select></p>
+
+<p>Number of payments: <input type="text" name="payments" size="3" /></p>
+
+<input type="submit" name="submit" value="Calculate!" />
+
+</form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+@charset "utf-8";
+
+#container {
+    padding: 5px 10px;
+}
+
+/* Header Styles =====================================*/
+
+#nav ul {
+    padding-left: 0;
+    margin-left: 0;
+    background-color: #036;
+    color: White;
+    float: left;
+    width: 100%;
+    font-family: arial, helvetica, sans-serif;
+}
+
+#nav ul li { display: inline; }
+
+#nav ul li a {
+    padding: 0.2em 1em;
+    background-color: #036;
+    color: White;
+    text-decoration: none;
+    float: left;
+    border-right: 1px solid #fff;
+}
+
+#nav ul li a:hover {
+    background-color: #369;
+    color: #fff;
+}
+
+
+/* Main Secition Styles ============================ */
+
+#main {
+    padding: 5px 10px;
+}
+
+#main .error {
+    color: #d00;
+    font-weight: bold;
+}
+
+#main table.form td {
+    padding: 2px 6px 0 0;
+}
+
+#main a {
+    color: #dd6633;
+}
+
+#main table.books {
+    border-collapse: collapse;
+    margin-bottom: 5px;
+}
+
+#main table.books th, #main table.books td {
+    border: 1px solid black;
+    padding: 3px 10px;
+}
+
+#main table.books th {
+    background-color: #dd6633;
+    color: white;
+}
+
+
+/* Footer Styles ==================================== */
+
+#footer {
+    margin-top: 5px;
+    padding: 4px;
+    background-color: #036;
+    color: White;
+    font-family: arial, helvetica, sans-serif;
+    text-align: center;
+}
+
