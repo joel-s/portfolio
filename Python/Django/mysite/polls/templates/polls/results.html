@@ -1,8 +1,15 @@
+<p><b><a href="{% url 'polls:index' %}">Brief Index</a></b></p>    
+
+<p><b><a href="{% url 'polls:detailed_index' %}">Detailed Index</a></b></p>    
+
+
 <h1>{{ poll.question }}</h1>
 
 <ul>
 {% for choice in poll.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+    <li>{{ choice.choice_text }} &mdash; 
+        {{ choice.votes }} vote{{ choice.votes|pluralize }}
+    </li>
 {% endfor %}
 </ul>
 

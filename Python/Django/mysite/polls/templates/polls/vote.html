@@ -1,3 +1,8 @@
+<p><b><a href="{% url 'polls:index' %}">Brief Index</a></b></p>    
+
+<p><b><a href="{% url 'polls:detailed_index' %}">Detailed Index</a></b></p>    
+
+
 <h1>{{ poll.question }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
