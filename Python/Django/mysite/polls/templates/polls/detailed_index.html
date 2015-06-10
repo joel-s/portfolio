@@ -1,5 +1,8 @@
 {% if latest_poll_list %}
     <p><b><a href="{% url 'polls:index' %}">Brief Index</a></b></p>    
+
+    <h1>Polls (Detailed Listing)</h1>
+
     <ul>
     {% for poll in latest_poll_list %}
         <li><a href="{% url 'polls:detail' poll.id %}">
