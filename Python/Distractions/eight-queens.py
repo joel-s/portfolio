@@ -6,6 +6,16 @@ Solve the 'eight queens' problem for a variable size chessboard.
 Print out all solutions and the total number of solutions.
 """
 
+import sys
+
+def main():
+    if len(sys.argv) == 2:
+        qb = QueenBoard(int(sys.argv[1]))
+    else:
+        qb = QueenBoard(8)
+    qb.solve()
+    print("Total solutions: %d" % qb.get_sol_count())
+
 class QueenBoard:
 
     def __init__(self, size):
@@ -47,6 +57,8 @@ class QueenBoard:
 
     def print_solution(self):
         for q in self.queens:
+            # Print a line with "##" representing the queen and "[]"
+            # representing every other square
             print(q*"[]" + "##" + (self.size-q-1)*"[]")
         print("\n" + 16*"-" + "\n")
 
@@ -54,6 +66,4 @@ class QueenBoard:
         return self.sol_count
 
 if __name__ == "__main__":
-    qb = QueenBoard(8)
-    qb.solve()
-    print(qb.get_sol_count())
+    main()

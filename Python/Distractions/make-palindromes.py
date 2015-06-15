@@ -188,11 +188,11 @@ def palindromeWithSuffix(s, minWords, blacklist=()):
             if rest is not None:
                 return rest +" " +word
 
-for min in range(1,50):
-    print min
+for minWords in range(1,50):
+    print "Palindromes with a minimum of %d words" % minWords
     print "-----"
     for i in range(5):
-        pal = makePalindrome(min)
+        pal = makePalindrome(minWords)
         print pal
         pal = pal.replace(" ", "")
         if DEBUG and pal != reverseString(pal):
