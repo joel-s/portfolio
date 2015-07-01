@@ -16,12 +16,14 @@ def index_view(request):
     return render(request, 'polls/index.html',
         {'latest_poll_list': polls})
 
+
 def detailed_index_view(request):
     polls = Poll.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
     return render(request, 'polls/detailed_index.html',
         {'latest_poll_list': polls})
+
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -48,6 +50,20 @@ class DetailView(generic.DetailView):
         return Poll.objects.filter(pub_date__lte=timezone.now())
 
 
+class DynamicIndexView(generic.ListView):
+    template_name = 'polls/dynamic_index.html'
+    context_object_name = 'latest_poll_list'
+
+    def get_queryset(self):
+        """
+        Return the last five published polls (not including those set to be
+        published in the future).
+        """
+        return Poll.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
+    
+
 class ResultsView(generic.DetailView):
     model = Poll
     template_name = 'polls/results.html'
@@ -70,3 +86,4 @@ def vote(request, poll_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+
