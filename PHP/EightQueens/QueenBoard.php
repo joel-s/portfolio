@@ -16,7 +16,10 @@ class QueenBoard
     }
 
     /** 
-     * A recursive generator that yields solutions as arrays of integers. 
+     * A recursive generator that yields solutions as arrays of integers.
+     *
+     * The return value is a reference to an internal array, so if you want
+     * to store or modify the array, you need to copy it first.
      */
     public function solutions($column = 0)
     {
