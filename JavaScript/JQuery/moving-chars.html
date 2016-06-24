@@ -1,0 +1,94 @@
+<html>
+
+<!--
+Goal: A brief syntax for specifying two classes for each character that
+can transition to one another.
+
+Use case 1: The characters converge from random directions, changing
+from clear to opaque, from the beginning to the end of the string.
+
+<style media="screen">
+   myContainer span.moving {
+      opacity: 0;
+      position: relative;
+      top: 0;
+      left: 0;
+      transition: all 5s ease-in-out;
+   }
+   myContainer:hover span.moving {
+      opacity: 1;
+      top: randomFromTo(-100, 100);
+      left: randomFromTo(-100, 100);
+      transition: all 2s ease-in-out range(?);
+   }
+}
+
+-->
+
+<head>
+   <meta charset="UTF-8">
+   <title>Moving Characters</title>
+
+   <style media="screen">
+      body {
+         font-family: Arial, Helvetica, sans-serif;
+         margin: 20px;
+      }
+      h2 {
+         font-size: 150%;
+         color: #BB250C;
+      }
+      p {
+         display: none;
+      }
+      p span.moving {
+         position: relative;
+         top: 0;
+         left: 0;
+         transition: all 5s ease-in-out;
+      }
+      p:hover span.moving {
+         top: 0 !important;
+         left: 0 !important;
+         transition: all 2s ease-in-out;
+      }
+   </style>
+
+
+</head>
+
+<body bgcolor="#FFF">
+
+<h2>JavaScript/CSS Demo: Hover over a Paragraph to Unscramble</h2>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="char-mover2.js"></script>
+<script>
+$(document).ready(function(){
+   'use strict';
+
+    window.cMover = new charMover.CharMover("p", /\S/g, 30, 0);
+   //  window.intervalID = setInterval(
+   //    "window.cMover.moveAll() || window.clearInterval(window.intervalID)",
+   //    1000);
+});
+</script>
+
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse augue ligula, gravida congue varius quis, cursus et risus. Pellentesque vel efficitur lorem. Praesent varius ullamcorper sem, ac malesuada quam ultrices sed. Ut condimentum gravida massa. Nulla eget ligula tortor. Vestibulum mollis auctor volutpat. Fusce nec luctus nulla. Integer maximus mi eu ante imperdiet, sed rutrum enim ultricies. Ut at purus rhoncus, fringilla ex eget, mattis eros.
+</p>
+<p>
+Maecenas consequat turpis orci, et finibus lorem faucibus ac. Aliquam mollis tincidunt ultrices. Suspendisse potenti. Duis tempor mi ut mollis efficitur. Nunc pharetra rhoncus ipsum quis accumsan. Ut pellentesque mi nulla, non euismod ipsum mollis vel. Aliquam dictum magna commodo est dictum pretium. Integer vestibulum a ex vitae dapibus. Vestibulum aliquet sem nec velit dignissim semper. Aliquam viverra nisl arcu, id tristique eros mattis vel. Etiam tempor varius turpis sed hendrerit. Proin molestie augue orci, eu tempus erat egestas et. Fusce porttitor vulputate orci a posuere. Nulla sit amet nibh consequat, commodo erat eget, venenatis ipsum.
+</p>
+<p>
+Proin varius, felis et vulputate faucibus, nulla diam dignissim lacus, in porttitor est tortor nec tellus. Etiam dapibus luctus dolor. Integer eu orci metus. Cras vel lacus id orci dictum malesuada a eu quam. Cras aliquet massa in feugiat laoreet. Nullam mattis metus sed eros efficitur, in gravida eros venenatis. Aenean fermentum turpis et pellentesque blandit. Phasellus iaculis, sapien sed posuere ultrices, nisi tortor elementum velit, sed molestie metus turpis maximus orci. Donec erat ipsum, sodales viverra laoreet vitae, lobortis quis quam. Proin felis erat, laoreet vitae orci a, tempus aliquam eros. Nunc elit turpis, cursus in lacus vel, lacinia tempor arcu.
+</p>
+<p>
+Praesent gravida cursus est eget fringilla. Nunc lobortis massa nibh, id feugiat lorem mollis eu. Pellentesque elementum felis vel egestas condimentum. Etiam vitae mi turpis. Ut aliquam nisi ex, a suscipit est molestie quis. Vestibulum faucibus magna sit amet ante rhoncus efficitur. Integer lobortis lectus erat, in ornare mi aliquam non.
+</p>
+<p>
+Maecenas pharetra molestie augue, et pulvinar dui egestas vitae. Curabitur vitae dictum eros. Curabitur viverra molestie purus at vehicula. Nulla non ex eu est egestas vulputate. Suspendisse ac accumsan neque, sed ultrices mi. Nunc elementum ligula neque, at gravida velit sollicitudin et. Donec sit amet mollis quam, et commodo arcu. Suspendisse potenti. Integer finibus, metus ac tristique vulputate, purus est feugiat lorem, sit amet auctor orci erat in quam. Praesent luctus nec nulla sit amet tempus. Curabitur auctor nunc eu interdum placerat.
+</p>
+
+</body>
+</html>

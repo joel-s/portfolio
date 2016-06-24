@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<title>JavaScript Demo: Disappearing Paragraphs</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h2>
+JavaScript Demo: Disappearing Paragraphs
+</h2>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="disappearing-paragraphs.js"></script>
+<script>
+$(document).ready(function(){
+    pHider = new htmlhider.HTMLHider("p");
+    intervalID = setInterval("pHider.hideOneElement() \
+      || clearInterval(intervalID)", 1000);
+});
+</script>
+
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<p>This is demo text.</p>
+<div id="debug">
+   <h2>Debug</h2>
+</div>
+</body>
+</html>
