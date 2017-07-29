@@ -1,0 +1,19 @@
+# Welcome to Recursion Land!
+#
+# The task is to build a binary tree using a breadth first insertion method,
+# and then print out a depth first traversal of the values:
+#
+# - Values to be inserted are in the comma delimited file 'input.txt'
+# - After insertion, the start of your tree should look like this...
+#               1
+#         ------|------
+#         |           |
+#         2           3
+#      ---|---     ---|---
+#      |     |     |     |
+#      4     5     6     7
+#
+# ...and so on
+#
+# - A depth first traversal should print one value per line and should match
+#   to the contents of 'output.txt'
